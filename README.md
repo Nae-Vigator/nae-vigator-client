@@ -1,73 +1,56 @@
-# React + TypeScript + Vite
+## 📌 브랜치 전략
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**기본 브랜치 구조**  
+git flow 전략을 기반으로 하지만 release 브랜치는 사용하지 않으며, feature 브랜치가 네 가지 타입(feature, fix, refactor, chore)으로 세분화된 구조를 사용합니다.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+main
+├── develop
+│   ├── feature/*
+│   ├── fix/*
+│   ├── refactor/*
+│   └── chore/*
+└── hotfix
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**브랜치 역할**  
+| 브랜치 | 역할 |
+| :------------ | :-------------------------------------- |
+| **main** | 배포용 브랜치. 실제 운영 환경에 반영되는 코드. |
+| **develop** | 다음 릴리즈를 위한 통합 브랜치. 기능 개발 브랜치들이 병합됨. |
+| **hotfix** | 배포 후 긴급 수정용 브랜치. `main`에서 직접 분기. |
+| **feature/** | 기능 개발 및 수정 작업용 브랜치. `develop`에서 분기. |
+| **fix/** | 버그 수정 작업용 브랜치. `develop`에서 분기. |
+| **refactor/** | 코드 리팩토링용 브랜치. `develop`에서 분기. |
+| **chore/** | 환경 설정, 문서 등 기타 작업용 브랜치. `develop`에서 분기. |
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+**브랜치 네이밍 규칙**  
+형식
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+${issue 타입}/${issue 번호}-${설명}
+```
+
+예시
+
+```
+feature/12-login-api
+fix/34-button
+refactor/56-auth-service
+chore/78-update-eslint
+```
+
+## 📌 커밋 컨벤션
+
+| 타입         | 설명                                 |
+| :----------- | :----------------------------------- |
+| **feat**     | 기능 추가 또는 수정                  |
+| **fix**      | 버그 수정                            |
+| **design**   | CSS 및 UI 디자인 변경                |
+| **refactor** | 코드 리팩토링                        |
+| **comment**  | 주석 추가, 변경, 삭제                |
+| **style**    | 코드 포맷팅, 린트 수정               |
+| **chore**    | 빌드, 패키지, 환경 설정 등 기타 작업 |
+| **rename**   | 파일/폴더명 수정 또는 이동           |
+| **remove**   | 불필요한 파일/코드 삭제              |
+| **docs**     | 문서 수정                            |
