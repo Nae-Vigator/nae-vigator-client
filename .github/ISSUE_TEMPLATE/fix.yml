@@ -1,0 +1,30 @@
+name: 'fix'
+description: '버그 수정 작업'
+labels: 'fix'
+body:
+  - type: textarea
+    attributes:
+      label: 버그 설명
+      description: 버그에 대한 설명을 작성해 주세요.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: 예상 결과
+      description: 예상 결과를 작성해 주세요.
+
+  - type: textarea
+    attributes:
+      label: 실제 결과
+      description: 실제 결과를 작성해 주세요.
+
+  - type: textarea
+    attributes:
+      label: 작업 목록
+      description: 작업 목록을 작성해 주세요.
+
+  - type: textarea
+    attributes:
+      label: 기타
+      placeholder: 브랜치 생성 시 ${issue 타입}/${issue 번호}-${설명} 형식으로 지정해주세요! ex) fix/1-UI-Button
