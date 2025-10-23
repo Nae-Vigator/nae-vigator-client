@@ -3,6 +3,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+body {
+  display: flex;
+  justify-content: center;
+  min-width: 1280px;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -36,6 +42,13 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
+}
+
+#root {
+  position: relative;
+  max-width: 1920px;
+  width: 100%;
+  min-height: 100dvh;
 }
 
 @theme inline {
