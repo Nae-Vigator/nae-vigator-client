@@ -31,7 +31,6 @@
   --sidebar: #1d1b2b;
   --sidebar-background: var(--sidebar);
   --sidebar-foreground: var(--color-zinc-100);
-  --sidebar-foreground/70: --alpha(var(--color-zinc-100) / 70%)
   --sidebar-primary: var(--color-zinc-700);
   --sidebar-primary-foreground: var(--color-white);
   --sidebar-accent: var(--color-zinc-800);
