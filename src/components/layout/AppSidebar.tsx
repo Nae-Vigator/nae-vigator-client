@@ -42,51 +42,53 @@ const MENU_LIST = [
 
 function AppSidebar() {
   const { open, toggleSidebar } = useSidebar();
-  const [isShowContent, setIsShowContent] = useState(open);
-  const [isCompanyListOpen, setIsCompanyListOpen] = useState(false);
-  const [openCompanies, setOpenCompanies] = useState<{
+  const [isContentVisible, setIsContentVisible] = useState(open);
+  const [isCompanySectionOpen, setIsCompanySectionOpen] = useState(false);
+  const [companyOpenMap, setCompanyOpenMap] = useState<{
     [key: number]: boolean;
   }>({ 0: true });
 
-  const handleSidebarOpenClick = () => {
+  const handleSidebarOpenIconClick = () => {
     if (open) return;
-
     toggleSidebar();
   };
 
   const handleCompanyListClick = () => {
-    if (isShowContent) setIsCompanyListOpen((prev) => !prev);
-    else handleSidebarOpenClick();
+    if (open) setIsCompanySectionOpen((prev) => !prev);
+    else handleSidebarOpenIconClick();
   };
 
   const toggleCompaniesMenu = (i: number, isOpen: boolean) => {
-    setOpenCompanies((prev) => ({ ...prev, [i]: isOpen }));
+    setCompanyOpenMap((prev) => ({ ...prev, [i]: isOpen }));
   };
 
   /** 사이드바 열림/닫힘 애니메이션에 맞춰 콘텐츠 표시 제어 */
   useEffect(() => {
     if (open) {
-      const timer = setTimeout(() => setIsShowContent(true), 200);
+      const timer = setTimeout(() => setIsContentVisible(true), 200);
       return () => clearTimeout(timer);
     } else {
-      setIsShowContent(false);
+      setIsContentVisible(false);
     }
   }, [open]);
 
   return (
     <Sidebar className="absolute text-zinc-50 px-5 py-8 bg-[var(--sidebar)]">
       <SidebarHeader className="flex justify-between items-center mb-2">
-        {isShowContent && (
+        {isContentVisible && (
           <div className="flex items-center gap-2">
             <LogoIcon />
             <h1 className="font-bold text-[15px]">내:비게이터</h1>
           </div>
         )}
 
-        {isShowContent ? (
+        {isContentVisible ? (
           <SidebarTrigger />
         ) : (
-          <button className="size-8 shrink-0" onClick={handleSidebarOpenClick}>
+          <button
+            className="size-8 shrink-0"
+            onClick={handleSidebarOpenIconClick}
+          >
             <LogoIcon />
           </button>
         )}
@@ -94,16 +96,16 @@ function AppSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarMenu className={cn(isShowContent && 'p-2')}>
+          <SidebarMenu className={cn(isContentVisible && 'p-2')}>
             <SidebarMenuItem className="flex items-center">
               <button
                 className="bg-zinc-700 size-8 flex justify-center items-center rounded-lg shrink-0"
-                onClick={handleSidebarOpenClick}
+                onClick={handleSidebarOpenIconClick}
               >
                 <GalleryVerticalEnd className="size-4" />
               </button>
 
-              {isShowContent && (
+              {isContentVisible && (
                 <>
                   <div className="flex flex-col w-full ml-2">
                     <strong className="font-semibold text-sm">직무 분야</strong>
@@ -121,24 +123,24 @@ function AppSidebar() {
           <SidebarMenu>
             <SidebarMenuItem>
               <Collapsible
-                open={isCompanyListOpen}
+                open={isCompanySectionOpen}
                 onOpenChange={handleCompanyListClick}
               >
                 <CollapsibleTrigger asChild>
                   <SidebarMenuButton
                     className={cn(
                       'transition-[height,padding]',
-                      !isShowContent && 'size-8 min-w-8',
+                      !isContentVisible && 'size-8 min-w-8',
                     )}
                   >
                     <StretchHorizontal />
-                    {isShowContent && (
+                    {isContentVisible && (
                       <>
                         <span className="w-full ">회사별 맞춤 관리</span>
                         <ChevronRight
                           className={cn(
                             'transition-transform',
-                            isCompanyListOpen && 'rotate-90',
+                            isCompanySectionOpen && 'rotate-90',
                           )}
                         />
                       </>
@@ -146,13 +148,13 @@ function AppSidebar() {
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
 
-                {isShowContent && (
+                {isContentVisible && (
                   <CollapsibleContent>
                     <SidebarMenu>
                       {COMPANY_LIST.map((company, i) => (
                         <SidebarMenuItem key={company} className="pl-3.5 ">
                           <Collapsible
-                            open={!!openCompanies[i]}
+                            open={!!companyOpenMap[i]}
                             onOpenChange={(open) =>
                               toggleCompaniesMenu(i, open)
                             }
@@ -166,7 +168,7 @@ function AppSidebar() {
                                     <ChevronRight
                                       className={cn(
                                         'transition-transform',
-                                        !!openCompanies[i] && 'rotate-90',
+                                        !!companyOpenMap[i] && 'rotate-90',
                                       )}
                                     />
                                   </SidebarMenuButton>
@@ -196,7 +198,7 @@ function AppSidebar() {
               </Collapsible>
             </SidebarMenuItem>
 
-            {isShowContent && (
+            {isContentVisible && (
               <SidebarMenuItem>
                 <SidebarMenuButton className="flex justify-between">
                   <span className="text-sidebar-foreground/70">회사 추가</span>
@@ -213,12 +215,12 @@ function AppSidebar() {
             {MENU_LIST.map(({ name, Icon }) => (
               <SidebarMenuItem key={name} className="flex items-center">
                 <SidebarMenuButton
-                  className={cn(!isShowContent && 'size-8 min-w-8')}
-                  onClick={handleSidebarOpenClick}
+                  className={cn(!isContentVisible && 'size-8 min-w-8')}
+                  onClick={handleSidebarOpenIconClick}
                 >
                   <Icon className="size-4" />
 
-                  {isShowContent && <span>{name}</span>}
+                  {isContentVisible && <span>{name}</span>}
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
@@ -228,11 +230,11 @@ function AppSidebar() {
 
       <SidebarFooter>
         <SidebarMenuButton
-          className={cn(!isShowContent && 'size-8 min-w-8')}
-          onClick={handleSidebarOpenClick}
+          className={cn(!isContentVisible && 'size-8 min-w-8')}
+          onClick={handleSidebarOpenIconClick}
         >
           <LogOut className="size-4" />
-          {isShowContent && <span>로그아웃</span>}
+          {isContentVisible && <span>로그아웃</span>}
         </SidebarMenuButton>
       </SidebarFooter>
     </Sidebar>
