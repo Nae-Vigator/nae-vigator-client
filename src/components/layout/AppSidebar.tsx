@@ -15,12 +15,16 @@ import {
 } from '../ui/sidebar';
 import LogoIcon from '../common/LogoIcon';
 import {
+  ChartPie,
   ChevronRight,
   ChevronsUpDown,
+  Ellipsis,
   GalleryVerticalEnd,
+  LogOut,
   Plus,
   Star,
   StretchHorizontal,
+  User,
 } from 'lucide-react';
 import {
   Collapsible,
@@ -30,6 +34,11 @@ import {
 import { cn } from '@/lib/utils';
 
 const COMPANY_LIST = ['회사명 1', '회사명 2', '회사명 3'];
+const MENU_LIST = [
+  { name: '기본 정보', Icon: User },
+  { name: '경험 정리 도움받기', Icon: ChartPie },
+  { name: '설정', Icon: Ellipsis },
+];
 
 function AppSidebar() {
   const { open, toggleSidebar } = useSidebar();
@@ -85,7 +94,7 @@ function AppSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarMenu className="p-2">
+          <SidebarMenu className={cn(isShowContent && 'p-2')}>
             <SidebarMenuItem className="flex items-center">
               <button
                 className="bg-zinc-700 size-8 flex justify-center items-center rounded-lg shrink-0"
@@ -116,11 +125,16 @@ function AppSidebar() {
                 onOpenChange={handleCompanyListClick}
               >
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton>
+                  <SidebarMenuButton
+                    className={cn(
+                      'transition-[height,padding]',
+                      !isShowContent && 'size-8 min-w-8',
+                    )}
+                  >
                     <StretchHorizontal />
                     {isShowContent && (
                       <>
-                        <span>회사별 맞춤 관리</span>
+                        <span className="w-full ">회사별 맞춤 관리</span>
                         <ChevronRight
                           className={cn(
                             'transition-transform',
@@ -193,8 +207,34 @@ function AppSidebar() {
             )}
           </SidebarMenu>
         </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarMenu className="text-sm">
+            {MENU_LIST.map(({ name, Icon }) => (
+              <SidebarMenuItem key={name} className="flex items-center">
+                <SidebarMenuButton
+                  className={cn(!isShowContent && 'size-8 min-w-8')}
+                  onClick={handleSidebarOpenClick}
+                >
+                  <Icon className="size-4" />
+
+                  {isShowContent && <span>{name}</span>}
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter />
+
+      <SidebarFooter>
+        <SidebarMenuButton
+          className={cn(!isShowContent && 'size-8 min-w-8')}
+          onClick={handleSidebarOpenClick}
+        >
+          <LogOut className="size-4" />
+          {isShowContent && <span>로그아웃</span>}
+        </SidebarMenuButton>
+      </SidebarFooter>
     </Sidebar>
   );
 }
