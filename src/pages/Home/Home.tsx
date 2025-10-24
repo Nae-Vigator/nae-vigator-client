@@ -1,9 +1,17 @@
-import Button from '../../components/ui/button';
+import { Button } from '@/components/ui/button';
 
 function Home() {
   return (
     <>
-      <Button>버튼</Button>
+      <div>
+        <Button>버튼</Button>
+        <Button>버튼</Button>
+        <Button>버튼</Button>
+        <Button>버튼</Button>
+      </div>
+      <div>
+        <p></p>
+      </div>
     </>
   );
 }
