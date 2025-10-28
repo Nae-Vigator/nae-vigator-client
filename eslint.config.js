@@ -19,6 +19,9 @@ export default defineConfig([
       eslintConfigPrettier,
       ...pluginQuery.configs['flat/recommended'],
     ],
+    rules: {
+      'react-refresh/only-export-components': 'warn',
+    },
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
