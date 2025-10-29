@@ -39,6 +39,18 @@
   --sidebar-ring: var(--color-zinc-300);
 }
 
+/** 
+* Typography Utilities
+* @link https://ui.shadcn.com/docs/components/typography
+*/
+@utility typo-h3 {
+  @apply text-2xl font-semibold tracking-tight;
+}
+
+@utility typo-h4 {
+  @apply text-xl font-semibold tracking-tight;
+}
+
 body {
   display: flex;
   justify-content: center;
