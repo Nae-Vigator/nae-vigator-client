@@ -29,6 +29,7 @@
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: #1d1b2b;
+  --sidebar-width: 16rem;
   --sidebar-background: var(--sidebar);
   --sidebar-foreground: var(--color-zinc-100);
   --sidebar-primary: var(--color-zinc-700);
