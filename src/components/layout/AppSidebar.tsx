@@ -32,6 +32,7 @@ import {
   CollapsibleTrigger,
 } from '../ui/collapsible';
 import { cn } from '@/lib/utils';
+import { Link } from 'react-router';
 
 const COMPANY_LIST = ['회사명 1', '회사명 2', '회사명 3'];
 const MENU_LIST = [
@@ -127,25 +128,27 @@ function AppSidebar() {
                 onOpenChange={handleCompanyListClick}
               >
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton
-                    className={cn(
-                      'transition-[height,padding]',
-                      !isContentVisible && 'size-8 min-w-8',
-                    )}
-                  >
-                    <StretchHorizontal />
-                    {isContentVisible && (
-                      <>
-                        <span className="w-full ">회사별 맞춤 관리</span>
-                        <ChevronRight
-                          className={cn(
-                            'transition-transform',
-                            isCompanySectionOpen && 'rotate-90',
-                          )}
-                        />
-                      </>
-                    )}
-                  </SidebarMenuButton>
+                  <Link to="/companies">
+                    <SidebarMenuButton
+                      className={cn(
+                        'transition-[height,padding]',
+                        !isContentVisible && 'size-8 min-w-8',
+                      )}
+                    >
+                      <StretchHorizontal />
+                      {isContentVisible && (
+                        <>
+                          <span className="w-full ">회사별 맞춤 관리</span>
+                          <ChevronRight
+                            className={cn(
+                              'transition-transform',
+                              isCompanySectionOpen && 'rotate-90',
+                            )}
+                          />
+                        </>
+                      )}
+                    </SidebarMenuButton>
+                  </Link>
                 </CollapsibleTrigger>
 
                 {isContentVisible && (
