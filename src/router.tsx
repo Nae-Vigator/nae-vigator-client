@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router';
-import Home from './pages/Home/Home';
 import AppRoot from './AppRoot';
-import NotFound from './NotFound';
+import NotFound from './pages/NotFound/NotFound';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import App from './App';
 /**
  * @link https://reactrouter.com/start/data/routing
  */
