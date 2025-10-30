@@ -3,6 +3,9 @@ import * as LabelPrimitive from '@radix-ui/react-label';
 
 import { cn } from '@/lib/utils';
 
+/**
+ * @prop isRequired - `true` 설정 시, `*` 마크가 라벨 텍스트 뒤에 추가됩니다.
+ */
 function Label({
   isRequired = false,
   className,
