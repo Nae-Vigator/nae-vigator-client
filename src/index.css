@@ -30,6 +30,7 @@
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: #1d1b2b;
+  --sidebar-width: 16rem;
   --sidebar-background: var(--sidebar);
   --sidebar-foreground: var(--color-zinc-100);
   --sidebar-primary: var(--color-zinc-700);
@@ -38,6 +39,18 @@
   --sidebar-accent-foreground: var(--color-zinc-100);
   --sidebar-border: var(--color-zinc-800);
   --sidebar-ring: var(--color-zinc-300);
+}
+
+/** 
+* Typography Utilities
+* @link https://ui.shadcn.com/docs/components/typography
+*/
+@utility typo-h3 {
+  @apply text-2xl font-semibold tracking-tight;
+}
+
+@utility typo-h4 {
+  @apply text-xl font-semibold tracking-tight;
 }
 
 body {
