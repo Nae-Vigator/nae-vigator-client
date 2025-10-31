@@ -1,5 +1,9 @@
 function LogoTitle({ ...props }: React.ComponentProps<'img'>) {
-  return <img src="/logo-title.svg" alt="내비게이터" {...props} />;
+  return (
+    <h1>
+      <img src="/logo-title.svg" alt="내비게이터" {...props} aria- />{' '}
+    </h1>
+  );
 }
 
 export default LogoTitle;
