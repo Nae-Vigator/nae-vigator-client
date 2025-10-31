@@ -35,6 +35,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
+import LogoTitle from '@/components/common/LogoTitle';
 
 const COMPANY_LIST = ['회사명 1', '회사명 2', '회사명 3'];
 const MENU_LIST = [
@@ -81,7 +82,8 @@ function AppSidebar() {
         {isContentVisible && (
           <div className="flex items-center gap-2">
             <LogoIcon />
-            <h1 className="font-bold text-[15px]">내:비게이터</h1>
+            <LogoTitle />
+            {/* <h1 className="font-bold text-[15px]">내:비게이터</h1> */}
           </div>
         )}
 
