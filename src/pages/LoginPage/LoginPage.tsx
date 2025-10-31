@@ -3,7 +3,7 @@ import kakao from '@/assets/images/kakao-logo.svg';
 import LogoIcon from '@/components/common/LogoIcon';
 import LogoTitle from '@/components/common/LogoTitle';
 
-function Login() {
+function LoginPage() {
   return (
     <div className="min-h-screen w-full bg-[#1D1B2B] flex justify-center items-center p-4">
       <div
@@ -48,4 +48,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginPage;

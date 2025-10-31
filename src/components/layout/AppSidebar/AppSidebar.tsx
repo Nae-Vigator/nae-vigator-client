@@ -1,4 +1,20 @@
 import { useEffect, useState } from 'react';
+
+import {
+  ChartPie,
+  ChevronRight,
+  ChevronsUpDown,
+  Ellipsis,
+  GalleryVerticalEnd,
+  LogOut,
+  Plus,
+  Star,
+  StretchHorizontal,
+  User,
+} from 'lucide-react';
+
+import { cn } from '@/lib/utils';
+import { Link } from 'react-router';
 import {
   Sidebar,
   SidebarContent,
@@ -12,27 +28,13 @@ import {
   SidebarMenuSubButton,
   SidebarTrigger,
   useSidebar,
-} from '../ui/sidebar';
-import LogoIcon from '../common/LogoIcon';
-import {
-  ChartPie,
-  ChevronRight,
-  ChevronsUpDown,
-  Ellipsis,
-  GalleryVerticalEnd,
-  LogOut,
-  Plus,
-  Star,
-  StretchHorizontal,
-  User,
-} from 'lucide-react';
+} from '@/components/ui/sidebar';
+import LogoIcon from '@/components/common/LogoIcon';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from '../ui/collapsible';
-import { cn } from '@/lib/utils';
-import { Link } from 'react-router';
+} from '@/components/ui/collapsible';
 
 const COMPANY_LIST = ['회사명 1', '회사명 2', '회사명 3'];
 const MENU_LIST = [
