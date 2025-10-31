@@ -7,7 +7,9 @@ function AppRoot() {
     <>
       <SidebarProvider>
         <AppSidebar />
-        <Outlet />
+        <main className="w-full py-8 px-20">
+          <Outlet />
+        </main>
       </SidebarProvider>
     </>
   );
