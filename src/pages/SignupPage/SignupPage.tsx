@@ -1,4 +1,4 @@
-export function Signup() {
+export function SignupPage() {
   return (
     <div>
       <h1>Signup Page</h1>
@@ -7,4 +7,4 @@ export function Signup() {
   );
 }
 
-export default Signup;
+export default SignupPage;

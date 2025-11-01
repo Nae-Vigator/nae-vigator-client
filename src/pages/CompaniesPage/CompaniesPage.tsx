@@ -54,7 +54,7 @@ const EMPLOYMENT_TYPE = [
   },
 ];
 
-function Companies() {
+function CompaniesPage() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
 
@@ -249,4 +249,4 @@ function Companies() {
   );
 }
 
-export default Companies;
+export default CompaniesPage;
