@@ -6,7 +6,7 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import SignupPage from './pages/SignupPage/SignupPage';
 import HomePage from './pages/HomePage/HomePage';
 import MainRoot from './components/layout/MainRoot/MainRoot';
-
+import TestPage from './pages/SignupPage/test';
 /**
  * @link https://reactrouter.com/start/data/routing
  */
@@ -25,6 +25,7 @@ const router = createBrowserRouter([
       },
       { path: 'login', element: <LoginPage /> },
       { path: 'signup', element: <SignupPage /> },
+      { path: 'test', element: <TestPage /> },
     ],
   },
 ]);

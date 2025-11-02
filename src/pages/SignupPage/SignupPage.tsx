@@ -1,171 +1,185 @@
 import { useState } from 'react';
 import LogoIcon from '@/components/common/LogoIcon';
 import LogoTitle from '@/components/common/LogoTitle';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface SignupPageProps {
   userName?: string;
 }
 
 function SignupPage({ userName = '예시' }: SignupPageProps) {
-  const [selectedJob, setSelectedJob] = useState('디자인');
-  const [isJobDropdownOpen, setIsJobDropdownOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [selectedJob, setSelectedJob] = useState('');
   const [detailedJob, setDetailedJob] = useState('');
-  const [jobSearch, setJobSearch] = useState('');
+  const [searchValue, setSearchValue] = useState('');
 
-  const jobs = ['개발', '디자인', '기획'];
+  const jobs = [
+    { value: '개발', label: '개발' },
+    { value: '디자인', label: '디자인' },
+    { value: '기획', label: '기획' },
+  ];
 
-  const handleJobSearchSubmit = () => {
-    if (jobSearch.trim()) {
-      setSelectedJob(jobSearch.trim());
-      setIsJobDropdownOpen(false);
-      setJobSearch('');
+  const isFormValid = selectedJob.trim() !== '' && detailedJob.trim() !== '';
+
+  const handleAddCustomJob = () => {
+    if (searchValue.trim()) {
+      setSelectedJob(searchValue.trim());
+      setOpen(false);
+      setSearchValue('');
     }
   };
 
-  const handleJobSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      handleJobSearchSubmit();
-    }
+  const handleSubmit = () => {
+    if (!isFormValid) return;
+    console.log('User Name:', userName);
+    console.log('Selected Job:', selectedJob);
+    console.log('Detailed Job:', detailedJob);
   };
-
-  const handleSubmit = () => {};
 
   return (
     <div className="min-h-screen w-full bg-[#1D1B2B] flex justify-center items-center p-4">
       <div
-        className="w-full max-w-[1600px] max-h-[900px] flex items-center justify-between px-[8%]"
+        className="w-full max-w-[1800px] max-h-[900px] flex items-center justify-between gap-16 px-[5%]"
         style={{ aspectRatio: '16/9' }}
       >
-        <div className="flex items-center gap-4 mr-16">
-          <LogoIcon className="w-[100px]" />
-          <LogoTitle className="w-[250px]" />
+        <div className="flex items-center gap-6 shrink-0">
+          <LogoIcon className="w-[130px]" />
+          <LogoTitle className="w-[320px]" />
         </div>
 
-        <div className="bg-white py-14 pl-14 pr-20 w-full max-w-[850px] shadow-xl rounded-xl">
-          <div className="w-full mb-10">
-            <h1 className="typo-h3 text-black mb-2">환영해요 {userName}님!</h1>
-            <p className="text-sm font-normal text-muted-foreground">
-              취업 준비중인 직군을 선택해주세요.
-            </p>
-          </div>
-
-          <div className="mb-8">
-            <label className="block text-sm font-bold text-black mb-3">
-              직군 선택 <span className="text-red-500">*</span>
-            </label>
-            <div className="relative">
-              <button
-                onClick={() => setIsJobDropdownOpen(!isJobDropdownOpen)}
-                className="w-full px-4 py-3 text-left bg-white border border-gray-300 rounded-lg flex items-center justify-between hover:border-gray-400 transition-colors"
-              >
-                <span
-                  className={
-                    selectedJob
-                      ? 'text-sm font-normal text-black'
-                      : 'text-sm font-normal text-gray-400'
-                  }
-                >
-                  {selectedJob || '직군을 선택해주세요.'}
-                </span>
-                <svg
-                  className={`w-5 h-5 text-gray-400 transition-transform ${
-                    isJobDropdownOpen ? 'rotate-180' : ''
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
-
-              {isJobDropdownOpen && (
-                <div className="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
-                  <div className="px-4 py-3 border-b border-gray-200">
-                    <div className="flex items-center gap-2 text-gray-400">
-                      <svg
-                        className="w-4 h-4 flex-shrink-0"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                      </svg>
-                      <input
-                        type="text"
-                        value={jobSearch}
-                        onChange={(e) => setJobSearch(e.target.value)}
-                        onKeyDown={handleJobSearchKeyDown}
-                        placeholder="추가 직군 검색하기"
-                        className="flex-1 text-sm font-normal bg-transparent border-none outline-none placeholder-gray-400 text-foreground"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    {jobs.map((job) => (
-                      <button
-                        key={job}
-                        onClick={() => {
-                          setSelectedJob(job);
-                          setIsJobDropdownOpen(false);
-                          setJobSearch('');
-                        }}
-                        className="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center justify-between transition-colors"
-                      >
-                        <span className="text-sm font-normal text-foreground">
-                          {job}
-                        </span>
-                        {selectedJob === job && (
-                          <svg
-                            className="w-5 h-5 text-black"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
+        <div className="bg-white py-40 px-18 flex-1 max-w-[950px] shadow-xl rounded-xl flex items-start pt-16">
+          <div className="w-full">
+            <div className="w-full mb-16">
+              <h1 className="text-2xl font-bold tracking-tight text-black mb-2">
+                환영해요 {userName}님!
+              </h1>
+              <p className="text-sm font-normal text-muted-foreground">
+                취업 준비중인 직군을 선택해주세요.
+              </p>
             </div>
-          </div>
 
-          <div className="mb-10">
-            <label className="block text-sm font-bold text-black mb-3">
-              상세 직무 <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              value={detailedJob}
-              onChange={(e) => setDetailedJob(e.target.value)}
-              placeholder="상세 직무를 입력해주세요."
-              className="w-full px-4 py-3 text-sm font-normal border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent placeholder-gray-400"
-            />
-          </div>
+            <div className="mb-12">
+              <Label
+                htmlFor="job-select"
+                isRequired
+                className="text-sm font-bold text-black mb-3"
+              >
+                직군 선택
+              </Label>
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open}
+                    className="w-full justify-between text-sm font-normal"
+                  >
+                    {selectedJob
+                      ? jobs.find((job) => job.value === selectedJob)?.label ||
+                        selectedJob
+                      : '직군을 선택해주세요.'}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0" align="start">
+                  <Command shouldFilter={false}>
+                    <CommandInput
+                      placeholder="추가 직군 검색하기"
+                      value={searchValue}
+                      onValueChange={setSearchValue}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && searchValue.trim()) {
+                          e.preventDefault();
+                          handleAddCustomJob();
+                        }
+                      }}
+                    />
+                    <CommandList>
+                      <CommandEmpty />
 
-          <div className="flex justify-center">
-            <button
-              onClick={handleSubmit}
-              className="px-8 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
-            >
-              선택 완료
-            </button>
+                      <CommandGroup>
+                        {jobs
+                          .filter((job) =>
+                            job.label
+                              .toLowerCase()
+                              .includes(searchValue.toLowerCase()),
+                          )
+                          .map((job) => (
+                            <CommandItem
+                              key={job.value}
+                              value={job.value}
+                              onSelect={(currentValue) => {
+                                setSelectedJob(
+                                  currentValue === selectedJob
+                                    ? ''
+                                    : currentValue,
+                                );
+                                setOpen(false);
+                                setSearchValue('');
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  'mr-2 h-4 w-4',
+                                  selectedJob === job.value
+                                    ? 'opacity-100'
+                                    : 'opacity-0',
+                                )}
+                              />
+                              {job.label}
+                            </CommandItem>
+                          ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <div className="mb-32">
+              <Label
+                htmlFor="detailed-job"
+                isRequired
+                className="text-sm font-bold text-black mb-3"
+              >
+                상세 직무
+              </Label>
+              <Input
+                id="detailed-job"
+                type="text"
+                value={detailedJob}
+                onChange={(e) => setDetailedJob(e.target.value)}
+                placeholder="상세 직무를 입력해주세요."
+                className="text-sm font-normal"
+              />
+            </div>
+
+            <div className="flex justify-center mt-8">
+              <Button
+                onClick={handleSubmit}
+                disabled={!isFormValid}
+                className="px-8 py-3 bg-black text-white hover:bg-gray-800 disabled:bg-gray-600 disabled:text-white disabled:cursor-not-allowed"
+              >
+                선택 완료
+              </Button>
+            </div>
           </div>
         </div>
       </div>
