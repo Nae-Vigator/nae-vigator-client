@@ -1,4 +1,20 @@
 import { useEffect, useState } from 'react';
+
+import {
+  ChartPie,
+  ChevronRight,
+  ChevronsUpDown,
+  Ellipsis,
+  GalleryVerticalEnd,
+  LogOut,
+  Plus,
+  Star,
+  StretchHorizontal,
+  User,
+} from 'lucide-react';
+
+import { cn } from '@/lib/utils';
+import { Link } from 'react-router';
 import {
   Sidebar,
   SidebarContent,
@@ -12,26 +28,14 @@ import {
   SidebarMenuSubButton,
   SidebarTrigger,
   useSidebar,
-} from '../ui/sidebar';
-import LogoIcon from '../common/LogoIcon';
-import {
-  ChartPie,
-  ChevronRight,
-  ChevronsUpDown,
-  Ellipsis,
-  GalleryVerticalEnd,
-  LogOut,
-  Plus,
-  Star,
-  StretchHorizontal,
-  User,
-} from 'lucide-react';
+} from '@/components/ui/sidebar';
+import LogoIcon from '@/components/common/LogoIcon';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from '../ui/collapsible';
-import { cn } from '@/lib/utils';
+} from '@/components/ui/collapsible';
+import LogoTitle from '@/components/common/LogoTitle';
 
 const COMPANY_LIST = ['회사명 1', '회사명 2', '회사명 3'];
 const MENU_LIST = [
@@ -78,7 +82,8 @@ function AppSidebar() {
         {isContentVisible && (
           <div className="flex items-center gap-2">
             <LogoIcon />
-            <h1 className="font-bold text-[15px]">내:비게이터</h1>
+            <LogoTitle />
+            {/* <h1 className="font-bold text-[15px]">내:비게이터</h1> */}
           </div>
         )}
 
@@ -127,25 +132,27 @@ function AppSidebar() {
                 onOpenChange={handleCompanyListClick}
               >
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton
-                    className={cn(
-                      'transition-[height,padding]',
-                      !isContentVisible && 'size-8 min-w-8',
-                    )}
-                  >
-                    <StretchHorizontal />
-                    {isContentVisible && (
-                      <>
-                        <span className="w-full ">회사별 맞춤 관리</span>
-                        <ChevronRight
-                          className={cn(
-                            'transition-transform',
-                            isCompanySectionOpen && 'rotate-90',
-                          )}
-                        />
-                      </>
-                    )}
-                  </SidebarMenuButton>
+                  <Link to="/companies">
+                    <SidebarMenuButton
+                      className={cn(
+                        'transition-[height,padding]',
+                        !isContentVisible && 'size-8 min-w-8',
+                      )}
+                    >
+                      <StretchHorizontal />
+                      {isContentVisible && (
+                        <>
+                          <span className="w-full ">회사별 맞춤 관리</span>
+                          <ChevronRight
+                            className={cn(
+                              'transition-transform',
+                              isCompanySectionOpen && 'rotate-90',
+                            )}
+                          />
+                        </>
+                      )}
+                    </SidebarMenuButton>
+                  </Link>
                 </CollapsibleTrigger>
 
                 {isContentVisible && (
