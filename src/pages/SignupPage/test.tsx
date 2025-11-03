@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -27,10 +28,38 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { Skeleton } from '@/components/ui/skeleton';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 
 function TestPage() {
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="min-h-screen w-full bg-gray-50 p-8">
       <div className="max-w-4xl mx-auto space-y-8">
@@ -51,7 +80,7 @@ function TestPage() {
             <Button size="sm">Small</Button>
             <Button size="default">Default</Button>
             <Button size="lg">Large</Button>
-            <Button size="icon">Icon</Button>
+            <Button size="icon">I</Button>
           </div>
         </section>
 
@@ -66,6 +95,12 @@ function TestPage() {
             <div>
               <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" placeholder="Enter your password" />
+            </div>
+            <div>
+              <Label htmlFor="required" isRequired>
+                Required Field
+              </Label>
+              <Input id="required" placeholder="This is required" />
             </div>
           </div>
         </section>
@@ -87,6 +122,48 @@ function TestPage() {
             <Separator className="my-4" />
             <p>Content below</p>
           </div>
+        </section>
+
+        {/* Command */}
+        <section className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">Command (Combobox)</h2>
+          <div className="max-w-md">
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button variant="outline" role="combobox">
+                  Select option...
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[200px] p-0">
+                <Command>
+                  <CommandInput placeholder="Search..." />
+                  <CommandList>
+                    <CommandEmpty>No results found.</CommandEmpty>
+                    <CommandGroup>
+                      <CommandItem onSelect={() => setOpen(false)}>Option 1</CommandItem>
+                      <CommandItem onSelect={() => setOpen(false)}>Option 2</CommandItem>
+                      <CommandItem onSelect={() => setOpen(false)}>Option 3</CommandItem>
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+          </div>
+        </section>
+
+        {/* Collapsible */}
+        <section className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">Collapsible</h2>
+          <Collapsible>
+            <CollapsibleTrigger asChild>
+              <Button variant="outline">Toggle Content</Button>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="mt-4">
+              <div className="p-4 border rounded-lg">
+                <p>This content can be collapsed and expanded.</p>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
         </section>
 
         {/* Dialog */}
@@ -130,6 +207,41 @@ function TestPage() {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+        </section>
+
+        {/* Sheet */}
+        <section className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">Sheet (Drawer)</h2>
+          <div className="flex gap-4">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline">Open Right Sheet</Button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Sheet Title</SheetTitle>
+                  <SheetDescription>
+                    This is a sheet component (drawer/side panel).
+                  </SheetDescription>
+                </SheetHeader>
+                <div className="mt-4">
+                  <p>Sheet content goes here.</p>
+                </div>
+              </SheetContent>
+            </Sheet>
+
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline">Open Left Sheet</Button>
+              </SheetTrigger>
+              <SheetContent side="left">
+                <SheetHeader>
+                  <SheetTitle>Left Sheet</SheetTitle>
+                  <SheetDescription>This opens from the left side.</SheetDescription>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
+          </div>
         </section>
 
         {/* Popover */}

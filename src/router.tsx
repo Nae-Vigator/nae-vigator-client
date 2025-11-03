@@ -7,6 +7,7 @@ import SignupPage from './pages/SignupPage/SignupPage';
 import HomePage from './pages/HomePage/HomePage';
 import MainRoot from './components/layout/MainRoot/MainRoot';
 import TestPage from './pages/SignupPage/test';
+import UserInfoPage from './pages/User-infoPage/User-infoPage';
 /**
  * @link https://reactrouter.com/start/data/routing
  */
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <HomePage /> },
           { path: 'companies', element: <CompaniesPage /> },
+          { path: 'user-info', element: <UserInfoPage /> },
         ],
       },
       { path: 'login', element: <LoginPage /> },
