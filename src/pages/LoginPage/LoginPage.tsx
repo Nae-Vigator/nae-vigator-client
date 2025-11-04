@@ -1,9 +1,9 @@
-import logo from '@/assets/images/logo.svg';
 import naver from '@/assets/images/naver-logo.svg';
 import kakao from '@/assets/images/kakao-logo.svg';
-import navi from '@/assets/images/navi.svg';
+import LogoIcon from '@/components/common/LogoIcon';
+import LogoTitle from '@/components/common/LogoTitle';
 
-function Login() {
+function LoginPage() {
   return (
     <div className="min-h-screen w-full bg-[#1D1B2B] flex justify-center items-center p-4">
       <div
@@ -11,8 +11,8 @@ function Login() {
         style={{ aspectRatio: '16/9' }}
       >
         <div className="flex items-center gap-6 mb-2">
-          <img src={logo} alt="로고" className="w-[120px]" />
-          <img src={navi} alt="내:비게이터" className="w-[300px]" />
+          <LogoIcon className="w-[150px]" />
+          <LogoTitle className="w-[373px]" />
         </div>
 
         <p className="text-zinc-300  text-2xl font-semibold tracking-tight mb-16 text-center">
@@ -48,4 +48,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginPage;
