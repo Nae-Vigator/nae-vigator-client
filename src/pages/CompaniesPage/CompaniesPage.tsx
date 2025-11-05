@@ -25,6 +25,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { Check, ChevronsUpDown, Plus } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router';
 
 const DATA = [
   { id: 1, name: '토스', job: 'UX 디자이너' },
@@ -216,7 +217,11 @@ function CompaniesPage() {
       {hasData && (
         <section className="flex gap-10 flex-wrap">
           {DATA.map(({ id, job, name }, i) => (
-            <div key={id} className="relative">
+            <Link
+              to={`/companies/${name}/experience`}
+              key={id}
+              className="relative"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="200"
@@ -241,7 +246,7 @@ function CompaniesPage() {
                 <span className="font-semibold">{name}</span>
                 <span className="text-sm">{job}</span>
               </div>
-            </div>
+            </Link>
           ))}
         </section>
       )}
