@@ -1,7 +1,10 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { EducationItem as EducationItemComponent } from './EducationItem';
+import { ActivityItem as ActivityItemComponent } from './ActivityItem';
+import type { EducationItem as EducationType, ActivityItem as ActivityType } from './types';
 
 type TabType =
   | 'personal'
@@ -14,8 +17,33 @@ type TabType =
   | 'awards'
   | 'abroad';
 
+// Daum Postcode API 타입 선언
+declare global {
+  interface Window {
+    daum: {
+      Postcode: new (config: {
+        oncomplete: (data: { address: string; zonecode: string }) => void;
+      }) => {
+        open: () => void;
+      };
+    };
+  }
+}
+
 function UserInfoPage() {
   const [activeTab, setActiveTab] = useState<TabType>('personal');
+  const [address, setAddress] = useState('');
+  const [gender, setGender] = useState('');
+  const [educationList, setEducationList] = useState<EducationType[]>(() => {
+    // localStorage에서 불러오기
+    const saved = localStorage.getItem('educationList');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [activityList, setActivityList] = useState<ActivityType[]>(() => {
+    const saved = localStorage.getItem('activityList');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   const personalInfoRef = useRef<HTMLDivElement>(null);
   const skillsRef = useRef<HTMLDivElement>(null);
@@ -27,12 +55,93 @@ function UserInfoPage() {
   const awardsRef = useRef<HTMLDivElement>(null);
   const abroadRef = useRef<HTMLDivElement>(null);
 
+  // educationList가 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    localStorage.setItem('educationList', JSON.stringify(educationList));
+  }, [educationList]);
+
+  // activityList가 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    localStorage.setItem('activityList', JSON.stringify(activityList));
+  }, [activityList]);
+
   const scrollToSection = (
     ref: React.RefObject<HTMLDivElement | null>,
     tab: TabType,
   ) => {
     setActiveTab(tab);
     ref.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleAddressSearch = () => {
+    new window.daum.Postcode({
+      oncomplete: function (data) {
+        setAddress(data.address);
+      },
+    }).open();
+  };
+
+  const addEducation = () => {
+    const newEducation: EducationType = {
+      id: Date.now().toString(),
+      schoolType: '',
+      schoolName: '',
+      major: '',
+      startDate: '',
+      endDate: '',
+      grade: '',
+      maxGrade: '',
+      status: '',
+      majorType: '',
+      thesis: '',
+    };
+    setEducationList([...educationList, newEducation]);
+  };
+
+  const removeEducation = (id: string) => {
+    setEducationList(educationList.filter((item) => item.id !== id));
+  };
+
+  const updateEducation = (
+    id: string,
+    field: keyof EducationType,
+    value: string,
+  ) => {
+    setEducationList(
+      educationList.map((item) =>
+        item.id === id ? { ...item, [field]: value } : item,
+      ),
+    );
+  };
+
+  const addActivity = () => {
+    const newActivity: ActivityType = {
+      id: Date.now().toString(),
+      activityType: '',
+      organization: '',
+      startDate: '',
+      endDate: '',
+      employed: '',
+      description: '',
+      task: '',
+    };
+    setActivityList([...activityList, newActivity]);
+  };
+
+  const removeActivity = (id: string) => {
+    setActivityList(activityList.filter((item) => item.id !== id));
+  };
+
+  const updateActivity = (
+    id: string,
+    field: keyof ActivityType,
+    value: string,
+  ) => {
+    setActivityList(
+      activityList.map((item) =>
+        item.id === id ? { ...item, [field]: value } : item,
+      ),
+    );
   };
 
   return (
@@ -139,7 +248,7 @@ function UserInfoPage() {
 
             <div className="flex-1">
               <div className="flex gap-4 mb-4">
-                <div className="flex-1">
+                <div className="w-48">
                   <Label
                     htmlFor="name"
                     isRequired
@@ -147,9 +256,13 @@ function UserInfoPage() {
                   >
                     이름
                   </Label>
-                  <Input id="name" placeholder="홍길동" className="bg-white text-foreground" />
+                  <Input
+                    id="name"
+                    placeholder="홍길동"
+                    className="bg-white text-foreground h-11"
+                  />
                 </div>
-                <div className="flex-1">
+                <div className="w-48">
                   <Label
                     htmlFor="birthdate"
                     isRequired
@@ -160,7 +273,7 @@ function UserInfoPage() {
                   <Input
                     id="birthdate"
                     placeholder="0000.00.00"
-                    className="bg-white text-foreground"
+                    className="bg-white text-foreground h-11"
                   />
                 </div>
                 <div className="w-32">
@@ -173,14 +286,24 @@ function UserInfoPage() {
                   </Label>
                   <select
                     id="gender"
-                    className="flex h-9 w-full rounded-md border border-input bg-white px-3 py-2 text-sm text-foreground"
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                    className={`flex h-11 w-full rounded-md border border-input bg-white px-3 py-2 text-sm ${
+                      gender === '' ? 'text-zinc-400' : 'text-foreground'
+                    }`}
                   >
-                    <option value="" className="text-zinc-400">성별 선택</option>
-                    <option value="male">남성</option>
-                    <option value="female">여성</option>
+                    <option value="" disabled hidden>
+                      성별 선택
+                    </option>
+                    <option value="male" className="text-foreground">
+                      남성
+                    </option>
+                    <option value="female" className="text-foreground">
+                      여성
+                    </option>
                   </select>
                 </div>
-                <div className="flex-[1.5]">
+                <div className="flex-1">
                   <Label
                     htmlFor="email"
                     isRequired
@@ -192,13 +315,13 @@ function UserInfoPage() {
                     id="email"
                     type="email"
                     placeholder="ava.wright@gmail.com"
-                    className="bg-white text-foreground"
+                    className="bg-white text-foreground h-11"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div>
+              <div className="flex gap-4 mb-6">
+                <div className="w-48">
                   <Label
                     htmlFor="phone"
                     isRequired
@@ -209,10 +332,10 @@ function UserInfoPage() {
                   <Input
                     id="phone"
                     placeholder="010-0000-0000"
-                    className="bg-white text-foreground"
+                    className="bg-white text-foreground h-11"
                   />
                 </div>
-                <div>
+                <div className="flex-1">
                   <Label
                     htmlFor="address"
                     className="text-sm font-medium text-foreground mb-2 block"
@@ -222,10 +345,20 @@ function UserInfoPage() {
                   <div className="flex gap-2">
                     <Input
                       id="address"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
                       placeholder="주소지 검색"
-                      className="flex-1 bg-white text-foreground"
+                      className="flex-1 bg-white text-foreground h-11"
+                      readOnly
                     />
-                    <Button variant="outline" className="text-sm font-medium text-foreground">찾기</Button>
+                    <Button
+                      variant="outline"
+                      className="text-sm font-medium text-foreground h-11"
+                      onClick={handleAddressSearch}
+                      type="button"
+                    >
+                      찾기
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -313,12 +446,26 @@ function UserInfoPage() {
       </div>
 
       <div ref={educationRef} className="mb-12">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-6">
           <p className="typo-p text-foreground">학력 및 학점</p>
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={addEducation}
+            disabled={educationList.length > 0}
+          >
             + 추가하기
           </Button>
         </div>
+
+        {educationList.map((edu) => (
+          <EducationItemComponent
+            key={edu.id}
+            edu={edu}
+            onUpdate={updateEducation}
+            onRemove={removeEducation}
+          />
+        ))}
       </div>
 
       <div ref={experienceRef} className="mb-12">
@@ -331,12 +478,25 @@ function UserInfoPage() {
       </div>
 
       <div ref={activitiesRef} className="mb-12">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-6">
           <p className="typo-p text-foreground">대외활동</p>
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={addActivity}
+          >
             + 추가하기
           </Button>
         </div>
+
+        {activityList.map((activity) => (
+          <ActivityItemComponent
+            key={activity.id}
+            activity={activity}
+            onUpdate={updateActivity}
+            onRemove={removeActivity}
+          />
+        ))}
       </div>
 
       <div ref={trainingRef} className="mb-12">
@@ -375,8 +535,8 @@ function UserInfoPage() {
         </div>
       </div>
 
-      <div className="flex justify-center mt-8 mb-8">
-        <Button className="bg-black text-white hover:bg-black/90 px-12">
+      <div className="flex justify-end mt-8 mb-8">
+        <Button className="bg-black text-white hover:bg-black/90 px-6">
           내 기본 정보 저장
         </Button>
       </div>
