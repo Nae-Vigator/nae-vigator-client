@@ -8,7 +8,11 @@ interface ActivityItemProps {
   onRemove: (id: string) => void;
 }
 
-export function ActivityItem({ activity, onUpdate, onRemove }: ActivityItemProps) {
+export function ActivityItem({
+  activity,
+  onUpdate,
+  onRemove,
+}: ActivityItemProps) {
   return (
     <div className="bg-zinc-50 p-6 rounded-lg border border-gray-200 mb-4">
       <div className="flex justify-end mb-4">
@@ -31,7 +35,9 @@ export function ActivityItem({ activity, onUpdate, onRemove }: ActivityItemProps
           </Label>
           <select
             value={activity.activityType}
-            onChange={(e) => onUpdate(activity.id, 'activityType', e.target.value)}
+            onChange={(e) =>
+              onUpdate(activity.id, 'activityType', e.target.value)
+            }
             className="flex h-11 w-full rounded-md border border-input bg-white px-3 py-2 text-sm"
           >
             <option value="">활동구분</option>
@@ -52,7 +58,9 @@ export function ActivityItem({ activity, onUpdate, onRemove }: ActivityItemProps
           <Input
             id={`organization-${activity.id}`}
             value={activity.organization}
-            onChange={(e) => onUpdate(activity.id, 'organization', e.target.value)}
+            onChange={(e) =>
+              onUpdate(activity.id, 'organization', e.target.value)
+            }
             placeholder="회사/기관/단체명"
             className="bg-white text-foreground h-11"
           />
@@ -102,7 +110,7 @@ export function ActivityItem({ activity, onUpdate, onRemove }: ActivityItemProps
           id={`employed-${activity.id}`}
           value={activity.employed}
           onChange={(e) => onUpdate(activity.id, 'employed', e.target.value)}
-          placeholder="이 내용은 어떠에서 표현되지 않으며, 사용자가 경험들을 정리하기 쉽게 메모로만 작성되는 란입니다."
+          placeholder="이 내용은 이력서에 포함되지 않으며, 사용자가 경험을 정리하기 쉽게 메모용으로 작성하는 칸입니다."
           className="bg-white text-foreground h-11"
         />
       </div>

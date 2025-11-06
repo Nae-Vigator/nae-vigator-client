@@ -4,7 +4,20 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { EducationItem as EducationItemComponent } from './EducationItem';
 import { ActivityItem as ActivityItemComponent } from './ActivityItem';
-import type { EducationItem as EducationType, ActivityItem as ActivityType } from './types';
+import { CareerItem as CareerItemComponent } from './CareerItem';
+import { TrainingItem as TrainingItemComponent } from './TrainingItem';
+import { CertificateItem as CertificateItemComponent } from './CertificateItem';
+import { AwardItem as AwardItemComponent } from './AwardItem';
+import { AbroadItem as AbroadItemComponent } from './AbroadItem';
+import type {
+  EducationItem as EducationType,
+  ActivityItem as ActivityType,
+  CareerItem as CareerType,
+  TrainingItem as TrainingType,
+  CertificateItem as CertificateType,
+  AwardItem as AwardType,
+  AbroadItem as AbroadType
+} from './types';
 
 type TabType =
   | 'personal'
@@ -45,6 +58,31 @@ function UserInfoPage() {
     return saved ? JSON.parse(saved) : [];
   });
 
+  const [careerList, setCareerList] = useState<CareerType[]>(() => {
+    const saved = localStorage.getItem('careerList');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [trainingList, setTrainingList] = useState<TrainingType[]>(() => {
+    const saved = localStorage.getItem('trainingList');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [certificateList, setCertificateList] = useState<CertificateType[]>(() => {
+    const saved = localStorage.getItem('certificateList');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [awardList, setAwardList] = useState<AwardType[]>(() => {
+    const saved = localStorage.getItem('awardList');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [abroadList, setAbroadList] = useState<AbroadType[]>(() => {
+    const saved = localStorage.getItem('abroadList');
+    return saved ? JSON.parse(saved) : [];
+  });
+
   const personalInfoRef = useRef<HTMLDivElement>(null);
   const skillsRef = useRef<HTMLDivElement>(null);
   const educationRef = useRef<HTMLDivElement>(null);
@@ -64,6 +102,31 @@ function UserInfoPage() {
   useEffect(() => {
     localStorage.setItem('activityList', JSON.stringify(activityList));
   }, [activityList]);
+
+  // careerList가 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    localStorage.setItem('careerList', JSON.stringify(careerList));
+  }, [careerList]);
+
+  // trainingList가 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    localStorage.setItem('trainingList', JSON.stringify(trainingList));
+  }, [trainingList]);
+
+  // certificateList가 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    localStorage.setItem('certificateList', JSON.stringify(certificateList));
+  }, [certificateList]);
+
+  // awardList가 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    localStorage.setItem('awardList', JSON.stringify(awardList));
+  }, [awardList]);
+
+  // abroadList가 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    localStorage.setItem('abroadList', JSON.stringify(abroadList));
+  }, [abroadList]);
 
   const scrollToSection = (
     ref: React.RefObject<HTMLDivElement | null>,
@@ -139,6 +202,146 @@ function UserInfoPage() {
   ) => {
     setActivityList(
       activityList.map((item) =>
+        item.id === id ? { ...item, [field]: value } : item,
+      ),
+    );
+  };
+
+  const addCareer = () => {
+    const newCareer: CareerType = {
+      id: Date.now().toString(),
+      companyName: '',
+      department: '',
+      startDate: '',
+      endDate: '',
+      isCurrentlyWorking: false,
+      position: '',
+      role: '',
+      salary: '',
+      responsibilities: '',
+    };
+    setCareerList([...careerList, newCareer]);
+  };
+
+  const removeCareer = (id: string) => {
+    setCareerList(careerList.filter((item) => item.id !== id));
+  };
+
+  const updateCareer = (
+    id: string,
+    field: keyof CareerType,
+    value: string | boolean,
+  ) => {
+    setCareerList(
+      careerList.map((item) =>
+        item.id === id ? { ...item, [field]: value } : item,
+      ),
+    );
+  };
+
+  const addTraining = () => {
+    const newTraining: TrainingType = {
+      id: Date.now().toString(),
+      courseName: '',
+      institution: '',
+      startDate: '',
+      endDate: '',
+      content: '',
+    };
+    setTrainingList([...trainingList, newTraining]);
+  };
+
+  const removeTraining = (id: string) => {
+    setTrainingList(trainingList.filter((item) => item.id !== id));
+  };
+
+  const updateTraining = (
+    id: string,
+    field: keyof TrainingType,
+    value: string,
+  ) => {
+    setTrainingList(
+      trainingList.map((item) =>
+        item.id === id ? { ...item, [field]: value } : item,
+      ),
+    );
+  };
+
+  const addCertificate = () => {
+    const newCertificate: CertificateType = {
+      id: Date.now().toString(),
+      certificateName: '',
+      issuer: '',
+      acquisitionDate: '',
+    };
+    setCertificateList([...certificateList, newCertificate]);
+  };
+
+  const removeCertificate = (id: string) => {
+    setCertificateList(certificateList.filter((item) => item.id !== id));
+  };
+
+  const updateCertificate = (
+    id: string,
+    field: keyof CertificateType,
+    value: string,
+  ) => {
+    setCertificateList(
+      certificateList.map((item) =>
+        item.id === id ? { ...item, [field]: value } : item,
+      ),
+    );
+  };
+
+  const addAward = () => {
+    const newAward: AwardType = {
+      id: Date.now().toString(),
+      awardName: '',
+      institution: '',
+      awardYear: '',
+      content: '',
+    };
+    setAwardList([...awardList, newAward]);
+  };
+
+  const removeAward = (id: string) => {
+    setAwardList(awardList.filter((item) => item.id !== id));
+  };
+
+  const updateAward = (
+    id: string,
+    field: keyof AwardType,
+    value: string,
+  ) => {
+    setAwardList(
+      awardList.map((item) =>
+        item.id === id ? { ...item, [field]: value } : item,
+      ),
+    );
+  };
+
+  const addAbroad = () => {
+    const newAbroad: AbroadType = {
+      id: Date.now().toString(),
+      country: '',
+      startDate: '',
+      endDate: '',
+      content: '',
+    };
+    setAbroadList([...abroadList, newAbroad]);
+  };
+
+  const removeAbroad = (id: string) => {
+    setAbroadList(abroadList.filter((item) => item.id !== id));
+  };
+
+  const updateAbroad = (
+    id: string,
+    field: keyof AbroadType,
+    value: string,
+  ) => {
+    setAbroadList(
+      abroadList.map((item) =>
         item.id === id ? { ...item, [field]: value } : item,
       ),
     );
@@ -469,12 +672,25 @@ function UserInfoPage() {
       </div>
 
       <div ref={experienceRef} className="mb-12">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-6">
           <p className="typo-p text-foreground">경력</p>
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={addCareer}
+          >
             + 추가하기
           </Button>
         </div>
+
+        {careerList.map((career) => (
+          <CareerItemComponent
+            key={career.id}
+            career={career}
+            onUpdate={updateCareer}
+            onRemove={removeCareer}
+          />
+        ))}
       </div>
 
       <div ref={activitiesRef} className="mb-12">
@@ -500,39 +716,91 @@ function UserInfoPage() {
       </div>
 
       <div ref={trainingRef} className="mb-12">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-6">
           <p className="typo-p text-foreground">교육</p>
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={addTraining}
+          >
             + 추가하기
           </Button>
         </div>
+
+        {trainingList.map((training) => (
+          <TrainingItemComponent
+            key={training.id}
+            training={training}
+            onUpdate={updateTraining}
+            onRemove={removeTraining}
+          />
+        ))}
       </div>
 
       <div ref={certificatesRef} className="mb-12">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-6">
           <p className="typo-p text-foreground">자격증 및 어학</p>
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={addCertificate}
+          >
             + 추가하기
           </Button>
         </div>
+
+        {certificateList.map((certificate) => (
+          <CertificateItemComponent
+            key={certificate.id}
+            certificate={certificate}
+            onUpdate={updateCertificate}
+            onRemove={removeCertificate}
+          />
+        ))}
       </div>
 
       <div ref={awardsRef} className="mb-12">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-6">
           <p className="typo-p text-foreground">수상</p>
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={addAward}
+          >
             + 추가하기
           </Button>
         </div>
+
+        {awardList.map((award) => (
+          <AwardItemComponent
+            key={award.id}
+            award={award}
+            onUpdate={updateAward}
+            onRemove={removeAward}
+          />
+        ))}
       </div>
 
       <div ref={abroadRef} className="mb-12">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-6">
           <p className="typo-p text-foreground">해외경험</p>
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={addAbroad}
+          >
             + 추가하기
           </Button>
         </div>
+
+        {abroadList.map((abroad) => (
+          <AbroadItemComponent
+            key={abroad.id}
+            abroad={abroad}
+            onUpdate={updateAbroad}
+            onRemove={removeAbroad}
+          />
+        ))}
       </div>
 
       <div className="flex justify-end mt-8 mb-8">
