@@ -1,12 +1,12 @@
 import { CalendarDays, Check, EllipsisVertical, Tags } from 'lucide-react';
-import { Badge } from '../ui/badge';
-import Tag from './Tag/Tag';
+import { Badge } from '../../ui/badge';
+import Tag from '../Tag/Tag';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
+} from '../../ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 
 type ExperienceCardProps = {

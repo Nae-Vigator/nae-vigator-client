@@ -1,4 +1,4 @@
-import ExperienceCard from '@/components/common/ExperienceCard';
+import ExperienceCard from '@/components/common/ExperienceCard/ExperienceCard';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
