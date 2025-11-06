@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import { ChevronRight, Plus, Tags } from 'lucide-react';
 import { Link, Outlet, useLocation, useParams } from 'react-router';
 import blankcompany from '@/assets/images/blank-company.svg';
+import Tag from '@/components/common/Tag/Tag';
 
 const PATH_LIST = [
   { path: 'experience', label: '경험정리' },
@@ -68,12 +69,12 @@ function CompaniesLayout() {
         <div className="flex items-center gap-5 mb-7">
           <Tags />
           <div className="flex gap-2">
-            <div className="border rounded-md px-2 py-1">Tag</div>
-            <div className="border rounded-md px-2 py-1">사용자중심</div>
-            <div className="border rounded-md px-2 py-1">데이터기반사고</div>
-            <div className="border rounded-md px-2 py-1">협업</div>
-            <div className="border rounded-md px-2 py-1">문제해결력</div>
-            <div className="border rounded-md px-2 py-1">디지털금융혁신</div>
+            <Tag label="Tag" />
+            <Tag label="사용자중심" />
+            <Tag label="데이터기반사고" />
+            <Tag label="협업" />
+            <Tag label="문제해결력" />
+            <Tag label="디지털금융혁신" />
           </div>
         </div>
 
