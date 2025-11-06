@@ -4,6 +4,7 @@ import { ChevronRight, Plus, Tags } from 'lucide-react';
 import { Link, Outlet, useLocation, useParams } from 'react-router';
 import blankcompany from '@/assets/images/blank-company.svg';
 import Tag from '@/components/common/Tag/Tag';
+import { useState } from 'react';
 
 const PATH_LIST = [
   { path: 'experience', label: '경험정리' },
@@ -18,13 +19,15 @@ const PAGE_TITLE_MAP: Record<string, string> = {
 };
 
 function CompaniesLayout() {
+  //TODO: 전역 상태로 관리하기
+  const [isExperienceSidebarOpen, setIsExperienceSidebarOpen] = useState(true);
   const location = useLocation();
   const params = useParams();
   const lastPath = location.pathname.split('/').pop() ?? '';
   const PAGE_TITLE = PAGE_TITLE_MAP[lastPath];
 
   return (
-    <>
+    <div className={cn(isExperienceSidebarOpen && 'pr-[424px]')}>
       <header>
         <div className="flex items-center gap-3.5 mb-10">
           <Link to="/companies">
@@ -38,7 +41,7 @@ function CompaniesLayout() {
         </div>
 
         <div className="flex justify-between gap-8 typo-h4 mb-7">
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-8 shrink-0">
             {PATH_LIST.map(({ path, label }) => (
               <Link
                 to={`/companies/${params.company}/${path}`}
@@ -61,7 +64,11 @@ function CompaniesLayout() {
             ))}
           </div>
 
-          <Button size="lg" className="h-11">
+          <Button
+            size="lg"
+            className="h-11"
+            onClick={() => setIsExperienceSidebarOpen((prev) => !prev)}
+          >
             <Plus /> 카드 추가
           </Button>
         </div>
@@ -90,7 +97,7 @@ function CompaniesLayout() {
       </header>
 
       <Outlet />
-    </>
+    </div>
   );
 }
 
