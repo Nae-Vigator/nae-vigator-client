@@ -6,6 +6,11 @@ import blankcompany from '@/assets/images/blank-company.svg';
 import Tag from '@/components/common/Tag/Tag';
 import { useState } from 'react';
 
+export type ExperienceSidebarContextType = [
+  boolean,
+  React.Dispatch<React.SetStateAction<boolean>>,
+];
+
 const PATH_LIST = [
   { path: 'experience', label: '경험정리' },
   { path: 'coverletter', label: '자기소개서' },
@@ -19,8 +24,7 @@ const PAGE_TITLE_MAP: Record<string, string> = {
 };
 
 function CompaniesLayout() {
-  //TODO: 전역 상태로 관리하기
-  const [isExperienceSidebarOpen, setIsExperienceSidebarOpen] = useState(true);
+  const [isExperienceSidebarOpen, setIsExperienceSidebarOpen] = useState(false);
   const location = useLocation();
   const params = useParams();
   const lastPath = location.pathname.split('/').pop() ?? '';
@@ -96,7 +100,14 @@ function CompaniesLayout() {
         </div>
       </header>
 
-      <Outlet />
+      <Outlet
+        context={
+          [
+            isExperienceSidebarOpen,
+            setIsExperienceSidebarOpen,
+          ] satisfies ExperienceSidebarContextType
+        }
+      />
     </div>
   );
 }
