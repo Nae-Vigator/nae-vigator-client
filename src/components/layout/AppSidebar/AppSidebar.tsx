@@ -98,7 +98,7 @@ function AppSidebar() {
         )}
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="scrollbar -mr-3 pr-3">
         <SidebarGroup>
           <SidebarMenu className={cn(isContentVisible && 'p-2')}>
             <SidebarMenuItem className="flex items-center">
