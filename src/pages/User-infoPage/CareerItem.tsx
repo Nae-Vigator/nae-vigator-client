@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CareerItem as CareerType } from './types';
+import type { CareerItem as CareerType } from './types';
 
 interface CareerItemProps {
   career: CareerType;

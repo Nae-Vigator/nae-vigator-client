@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { TrainingItem as TrainingType } from './types';
+import type { TrainingItem as TrainingType } from './types';
 
 interface TrainingItemProps {
   training: TrainingType;
@@ -8,7 +8,11 @@ interface TrainingItemProps {
   onRemove: (id: string) => void;
 }
 
-export function TrainingItem({ training, onUpdate, onRemove }: TrainingItemProps) {
+export function TrainingItem({
+  training,
+  onUpdate,
+  onRemove,
+}: TrainingItemProps) {
   return (
     <div className="bg-zinc-50 p-6 rounded-lg border border-gray-200 mb-4">
       <div className="flex justify-end mb-4">
@@ -32,7 +36,9 @@ export function TrainingItem({ training, onUpdate, onRemove }: TrainingItemProps
           <Input
             id={`courseName-${training.id}`}
             value={training.courseName}
-            onChange={(e) => onUpdate(training.id, 'courseName', e.target.value)}
+            onChange={(e) =>
+              onUpdate(training.id, 'courseName', e.target.value)
+            }
             placeholder="교육명"
             className="bg-white text-foreground h-11"
           />
@@ -48,7 +54,9 @@ export function TrainingItem({ training, onUpdate, onRemove }: TrainingItemProps
           <Input
             id={`institution-${training.id}`}
             value={training.institution}
-            onChange={(e) => onUpdate(training.id, 'institution', e.target.value)}
+            onChange={(e) =>
+              onUpdate(training.id, 'institution', e.target.value)
+            }
             placeholder="교육기관"
             className="bg-white text-foreground h-11"
           />
@@ -99,7 +107,7 @@ export function TrainingItem({ training, onUpdate, onRemove }: TrainingItemProps
           value={training.content}
           onChange={(e) => onUpdate(training.id, 'content', e.target.value)}
           className="flex w-full rounded-md border border-input bg-white px-3 py-2 text-sm min-h-[100px]"
-          placeholder="이수하신 교육장에 대해 직성해주세요."
+          placeholder="이수하신 교육과정에 대해 직성해주세요."
         />
       </div>
     </div>

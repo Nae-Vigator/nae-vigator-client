@@ -16,7 +16,7 @@ import type {
   TrainingItem as TrainingType,
   CertificateItem as CertificateType,
   AwardItem as AwardType,
-  AbroadItem as AbroadType
+  AbroadItem as AbroadType,
 } from './types';
 
 type TabType =
@@ -30,7 +30,6 @@ type TabType =
   | 'awards'
   | 'abroad';
 
-// Daum Postcode API 타입 선언
 declare global {
   interface Window {
     daum: {
@@ -47,8 +46,15 @@ function UserInfoPage() {
   const [activeTab, setActiveTab] = useState<TabType>('personal');
   const [address, setAddress] = useState('');
   const [gender, setGender] = useState('');
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [skillSearchInput, setSkillSearchInput] = useState('');
+  const [selectedSkills, setSelectedSkills] = useState<string[]>(() => {
+    const saved = localStorage.getItem('selectedSkills');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [recommendedSkills, setRecommendedSkills] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [educationList, setEducationList] = useState<EducationType[]>(() => {
-    // localStorage에서 불러오기
     const saved = localStorage.getItem('educationList');
     return saved ? JSON.parse(saved) : [];
   });
@@ -68,10 +74,12 @@ function UserInfoPage() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const [certificateList, setCertificateList] = useState<CertificateType[]>(() => {
-    const saved = localStorage.getItem('certificateList');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [certificateList, setCertificateList] = useState<CertificateType[]>(
+    () => {
+      const saved = localStorage.getItem('certificateList');
+      return saved ? JSON.parse(saved) : [];
+    },
+  );
 
   const [awardList, setAwardList] = useState<AwardType[]>(() => {
     const saved = localStorage.getItem('awardList');
@@ -93,40 +101,37 @@ function UserInfoPage() {
   const awardsRef = useRef<HTMLDivElement>(null);
   const abroadRef = useRef<HTMLDivElement>(null);
 
-  // educationList가 변경될 때마다 localStorage에 저장
   useEffect(() => {
     localStorage.setItem('educationList', JSON.stringify(educationList));
   }, [educationList]);
 
-  // activityList가 변경될 때마다 localStorage에 저장
   useEffect(() => {
     localStorage.setItem('activityList', JSON.stringify(activityList));
   }, [activityList]);
 
-  // careerList가 변경될 때마다 localStorage에 저장
   useEffect(() => {
     localStorage.setItem('careerList', JSON.stringify(careerList));
   }, [careerList]);
 
-  // trainingList가 변경될 때마다 localStorage에 저장
   useEffect(() => {
     localStorage.setItem('trainingList', JSON.stringify(trainingList));
   }, [trainingList]);
 
-  // certificateList가 변경될 때마다 localStorage에 저장
   useEffect(() => {
     localStorage.setItem('certificateList', JSON.stringify(certificateList));
   }, [certificateList]);
 
-  // awardList가 변경될 때마다 localStorage에 저장
   useEffect(() => {
     localStorage.setItem('awardList', JSON.stringify(awardList));
   }, [awardList]);
 
-  // abroadList가 변경될 때마다 localStorage에 저장
   useEffect(() => {
     localStorage.setItem('abroadList', JSON.stringify(abroadList));
   }, [abroadList]);
+
+  useEffect(() => {
+    localStorage.setItem('selectedSkills', JSON.stringify(selectedSkills));
+  }, [selectedSkills]);
 
   const scrollToSection = (
     ref: React.RefObject<HTMLDivElement | null>,
@@ -142,6 +147,25 @@ function UserInfoPage() {
         setAddress(data.address);
       },
     }).open();
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert('파일 크기는 5MB 이하여야 합니다.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageUploadClick = () => {
+    fileInputRef.current?.click();
   };
 
   const addEducation = () => {
@@ -308,11 +332,7 @@ function UserInfoPage() {
     setAwardList(awardList.filter((item) => item.id !== id));
   };
 
-  const updateAward = (
-    id: string,
-    field: keyof AwardType,
-    value: string,
-  ) => {
+  const updateAward = (id: string, field: keyof AwardType, value: string) => {
     setAwardList(
       awardList.map((item) =>
         item.id === id ? { ...item, [field]: value } : item,
@@ -335,16 +355,77 @@ function UserInfoPage() {
     setAbroadList(abroadList.filter((item) => item.id !== id));
   };
 
-  const updateAbroad = (
-    id: string,
-    field: keyof AbroadType,
-    value: string,
-  ) => {
+  const updateAbroad = (id: string, field: keyof AbroadType, value: string) => {
     setAbroadList(
       abroadList.map((item) =>
         item.id === id ? { ...item, [field]: value } : item,
       ),
     );
+  };
+
+  // 스킬 검색
+  const handleSkillSearch = async (searchTerm: string) => {
+    setSkillSearchInput(searchTerm);
+
+    if (!searchTerm.trim()) {
+      setRecommendedSkills([]);
+      return;
+    }
+
+    // 더미 데이터, api 연동 전
+    const dummySkills = [
+      'React',
+      'Vue',
+      'Angular',
+      'JavaScript',
+      'TypeScript',
+      'Node.js',
+      'Python',
+      'Java',
+      'Spring',
+      'Django',
+      'AWS',
+      'Docker',
+      'Kubernetes',
+      'Git',
+      'Figma',
+    ];
+    const filtered = dummySkills.filter((skill) =>
+      skill.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+    setRecommendedSkills(filtered);
+  };
+
+  const handleAddSkill = (skill: string) => {
+    if (selectedSkills.length >= 20) {
+      alert('최대 20개까지 선택 가능합니다.');
+      return;
+    }
+    if (!selectedSkills.includes(skill)) {
+      setSelectedSkills([...selectedSkills, skill]);
+    }
+    setSkillSearchInput('');
+    setRecommendedSkills([]);
+  };
+
+  const handleRemoveSkill = (skill: string) => {
+    setSelectedSkills(selectedSkills.filter((s) => s !== skill));
+  };
+
+  const handleResetSkills = () => {
+    setSelectedSkills([]);
+    setSkillSearchInput('');
+    setRecommendedSkills([]);
+  };
+
+  const handleSkillKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && skillSearchInput.trim()) {
+      if (recommendedSkills.length > 0) {
+        handleAddSkill(recommendedSkills[0]);
+      } else {
+        handleAddSkill(skillSearchInput.trim());
+      }
+    }
   };
 
   return (
@@ -438,12 +519,29 @@ function UserInfoPage() {
         <div className="bg-zinc-50 p-6 rounded-lg border border-gray-200">
           <div className="flex gap-6">
             <div className="flex flex-col gap-2">
-              <div className="w-40 h-48 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-[repeating-conic-gradient(#e5e7eb_0%_25%,transparent_0%_50%)_0_0/20px_20px] flex-shrink-0">
-                <span className="text-gray-400 text-sm">사진</span>
+              <div className="w-40 h-48 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-[repeating-conic-gradient(#e5e7eb_0%_25%,transparent_0%_50%)_0_0/20px_20px] flex-shrink-0 overflow-hidden">
+                {profileImage ? (
+                  <img
+                    src={profileImage}
+                    alt="프로필 사진"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-gray-400 text-sm">사진</span>
+                )}
               </div>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageUpload}
+                accept="image/*"
+                className="hidden"
+              />
               <Button
                 variant="outline"
                 className="bg-black text-white hover:bg-black/90"
+                onClick={handleImageUploadClick}
+                type="button"
               >
                 사진 업로드
               </Button>
@@ -549,19 +647,37 @@ function UserInfoPage() {
                     <Input
                       id="address"
                       value={address}
-                      onChange={(e) => setAddress(e.target.value)}
                       placeholder="주소지 검색"
                       className="flex-1 bg-white text-foreground h-11"
                       readOnly
                     />
-                    <Button
-                      variant="outline"
-                      className="text-sm font-medium text-foreground h-11"
-                      onClick={handleAddressSearch}
+                    <button
                       type="button"
+                      onClick={handleAddressSearch}
+                      className="w-11 h-11 bg-black hover:bg-black/90 rounded-md flex items-center justify-center shrink-0"
                     >
-                      찾기
-                    </Button>
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
+                        <path
+                          d="M7 12C9.76142 12 12 9.76142 12 7C12 4.23858 9.76142 2 7 2C4.23858 2 2 4.23858 2 7C2 9.76142 4.23858 12 7 12Z"
+                          stroke="white"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M14 14L10.5 10.5"
+                          stroke="white"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -624,24 +740,97 @@ function UserInfoPage() {
         </div>
 
         <div className="bg-zinc-50 p-6 rounded-lg border border-gray-200">
-          <Label className="text-sm font-medium mb-2 block">
-            무엇이든 스킬을 입력하요?
-          </Label>
+          <div className="relative mb-4">
+            <div className="flex items-center gap-2 border border-gray-200 rounded-md bg-white px-3 py-2">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                className="text-gray-400"
+              >
+                <path
+                  d="M7 12C9.76142 12 12 9.76142 12 7C12 4.23858 9.76142 2 7 2C4.23858 2 2 4.23858 2 7C2 9.76142 4.23858 12 7 12Z"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M14 14L10.5 10.5"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <input
+                type="text"
+                value={skillSearchInput}
+                onChange={(e) => handleSkillSearch(e.target.value)}
+                onKeyPress={handleSkillKeyPress}
+                placeholder="찾으시는 스킬이 있나요?"
+                className="flex-1 outline-none text-sm"
+              />
+            </div>
+
+            {recommendedSkills.length > 0 && (
+              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                {recommendedSkills.map((skill) => (
+                  <button
+                    key={skill}
+                    onClick={() => handleAddSkill(skill)}
+                    className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center justify-between"
+                  >
+                    <span>{skill}</span>
+                    <span className="text-xs text-gray-400">추가하기</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
           <Button variant="outline" className="mb-4">
+            {/* signup 페이지에서 선택한 직군 데이터 연동해야함 */}
             내가 선택한 직군
           </Button>
-
-          <div className="border border-gray-200 rounded-md p-4 min-h-[120px] bg-white">
-            <div className="flex flex-wrap gap-2">
-              <span className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-2">
-                내가 선택한 스킬 (4/20)
-                <button className="text-gray-500 hover:text-black">×</button>
-              </span>
-            </div>
+          <div className="border border-gray-200 rounded-md p-4 min-h-[120px] bg-white mb-2">
+            <p className="text-sm font-medium text-foreground mb-3">
+              내가 선택한 스킬 ({selectedSkills.length}/20)
+            </p>
+            {selectedSkills.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {selectedSkills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center gap-2"
+                  >
+                    {skill}
+                    <button
+                      onClick={() => handleRemoveSkill(skill)}
+                      className="text-gray-500 hover:text-black"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+            ) : null}
           </div>
 
           <div className="flex justify-end mt-2">
-            <button className="text-sm text-foreground hover:underline flex items-center gap-1">
+            <button
+              onClick={handleResetSkills}
+              className="text-sm text-foreground hover:underline flex items-center gap-1"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path
+                  d="M13 6.5C13 9.81371 10.3137 12.5 7 12.5C3.68629 12.5 1 9.81371 1 6.5C1 3.18629 3.68629 0.5 7 0.5"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
               <span>초기화</span>
             </button>
           </div>
@@ -674,11 +863,7 @@ function UserInfoPage() {
       <div ref={experienceRef} className="mb-12">
         <div className="flex items-center justify-between mb-6">
           <p className="typo-p text-foreground">경력</p>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={addCareer}
-          >
+          <Button variant="outline" size="sm" onClick={addCareer}>
             + 추가하기
           </Button>
         </div>
@@ -696,11 +881,7 @@ function UserInfoPage() {
       <div ref={activitiesRef} className="mb-12">
         <div className="flex items-center justify-between mb-6">
           <p className="typo-p text-foreground">대외활동</p>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={addActivity}
-          >
+          <Button variant="outline" size="sm" onClick={addActivity}>
             + 추가하기
           </Button>
         </div>
@@ -718,11 +899,7 @@ function UserInfoPage() {
       <div ref={trainingRef} className="mb-12">
         <div className="flex items-center justify-between mb-6">
           <p className="typo-p text-foreground">교육</p>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={addTraining}
-          >
+          <Button variant="outline" size="sm" onClick={addTraining}>
             + 추가하기
           </Button>
         </div>
@@ -740,11 +917,7 @@ function UserInfoPage() {
       <div ref={certificatesRef} className="mb-12">
         <div className="flex items-center justify-between mb-6">
           <p className="typo-p text-foreground">자격증 및 어학</p>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={addCertificate}
-          >
+          <Button variant="outline" size="sm" onClick={addCertificate}>
             + 추가하기
           </Button>
         </div>
@@ -762,11 +935,7 @@ function UserInfoPage() {
       <div ref={awardsRef} className="mb-12">
         <div className="flex items-center justify-between mb-6">
           <p className="typo-p text-foreground">수상</p>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={addAward}
-          >
+          <Button variant="outline" size="sm" onClick={addAward}>
             + 추가하기
           </Button>
         </div>
@@ -784,11 +953,7 @@ function UserInfoPage() {
       <div ref={abroadRef} className="mb-12">
         <div className="flex items-center justify-between mb-6">
           <p className="typo-p text-foreground">해외경험</p>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={addAbroad}
-          >
+          <Button variant="outline" size="sm" onClick={addAbroad}>
             + 추가하기
           </Button>
         </div>

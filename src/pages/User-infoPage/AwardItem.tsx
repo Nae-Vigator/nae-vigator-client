@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { AwardItem as AwardType } from './types';
+import type { AwardItem as AwardType } from './types';
 
 interface AwardItemProps {
   award: AwardType;
@@ -84,7 +84,7 @@ export function AwardItem({ award, onUpdate, onRemove }: AwardItemProps) {
           value={award.content}
           onChange={(e) => onUpdate(award.id, 'content', e.target.value)}
           className="flex w-full rounded-md border border-input bg-white px-3 py-2 text-sm min-h-[100px]"
-          placeholder="수여 내용 및 결과물을 작성해 주세요."
+          placeholder="수여 내용 및 결과물을 자세히 입력해주세요."
         />
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { AbroadItem as AbroadType } from './types';
+import type { AbroadItem as AbroadType } from './types';
 
 interface AbroadItemProps {
   abroad: AbroadType;
@@ -33,7 +33,7 @@ export function AbroadItem({ abroad, onUpdate, onRemove }: AbroadItemProps) {
             id={`country-${abroad.id}`}
             value={abroad.country}
             onChange={(e) => onUpdate(abroad.id, 'country', e.target.value)}
-            placeholder="국가명 검색"
+            placeholder="국가명을 입력해주세요"
             className="bg-white text-foreground h-11"
           />
         </div>

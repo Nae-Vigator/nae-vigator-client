@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ActivityItem as ActivityType } from './types';
+import type { ActivityItem as ActivityType } from './types';
 
 interface ActivityItemProps {
   activity: ActivityType;

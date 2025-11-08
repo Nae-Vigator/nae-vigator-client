@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { EducationItem as EducationType } from './types';
+import type { EducationItem as EducationType } from './types';
 
 interface EducationItemProps {
   edu: EducationType;

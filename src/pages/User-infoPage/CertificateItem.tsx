@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CertificateItem as CertificateType } from './types';
+import type { CertificateItem as CertificateType } from './types';
 
 interface CertificateItemProps {
   certificate: CertificateType;
@@ -8,7 +8,11 @@ interface CertificateItemProps {
   onRemove: (id: string) => void;
 }
 
-export function CertificateItem({ certificate, onUpdate, onRemove }: CertificateItemProps) {
+export function CertificateItem({
+  certificate,
+  onUpdate,
+  onRemove,
+}: CertificateItemProps) {
   return (
     <div className="bg-zinc-50 p-6 rounded-lg border border-gray-200 mb-4">
       <div className="flex justify-end mb-4">
@@ -32,8 +36,10 @@ export function CertificateItem({ certificate, onUpdate, onRemove }: Certificate
           <Input
             id={`certificateName-${certificate.id}`}
             value={certificate.certificateName}
-            onChange={(e) => onUpdate(certificate.id, 'certificateName', e.target.value)}
-            placeholder="자격증 명 검색"
+            onChange={(e) =>
+              onUpdate(certificate.id, 'certificateName', e.target.value)
+            }
+            placeholder="자격증 명을 입력해주세요"
             className="bg-white text-foreground h-11"
           />
         </div>
@@ -64,7 +70,9 @@ export function CertificateItem({ certificate, onUpdate, onRemove }: Certificate
           <Input
             id={`acquisitionDate-${certificate.id}`}
             value={certificate.acquisitionDate}
-            onChange={(e) => onUpdate(certificate.id, 'acquisitionDate', e.target.value)}
+            onChange={(e) =>
+              onUpdate(certificate.id, 'acquisitionDate', e.target.value)
+            }
             placeholder="0000.00"
             className="bg-white text-foreground h-11"
           />
