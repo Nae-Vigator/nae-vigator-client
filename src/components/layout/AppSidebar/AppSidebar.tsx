@@ -83,7 +83,6 @@ function AppSidebar() {
           <div className="flex items-center gap-2">
             <LogoIcon />
             <LogoTitle />
-            {/* <h1 className="font-bold text-[15px]">내:비게이터</h1> */}
           </div>
         )}
 
@@ -185,12 +184,16 @@ function AppSidebar() {
 
                             <CollapsibleContent>
                               <SidebarMenuSub>
-                                <SidebarMenuSubButton isActive={i === 0}>
-                                  경험정리
-                                </SidebarMenuSubButton>
-                                <SidebarMenuSubButton>
-                                  자기소개서
-                                </SidebarMenuSubButton>
+                                <Link to={`/companies/${company}/experience`}>
+                                  <SidebarMenuSubButton isActive={i === 0}>
+                                    경험정리
+                                  </SidebarMenuSubButton>
+                                </Link>
+                                <Link to={`/companies/${company}/coverletter`}>
+                                  <SidebarMenuSubButton>
+                                    자기소개서
+                                  </SidebarMenuSubButton>
+                                </Link>
                                 <SidebarMenuSubButton>
                                   예상 면접 질문
                                 </SidebarMenuSubButton>
