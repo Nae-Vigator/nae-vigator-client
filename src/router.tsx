@@ -6,10 +6,7 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import SignupPage from './pages/SignupPage/SignupPage';
 import HomePage from './pages/HomePage/HomePage';
 import MainRoot from './components/layout/MainRoot/MainRoot';
-import TestPage from './pages/SignupPage/test';
-import CompaniesLayout from './components/layout/CompaniesLayout/CompaniesLayout';
-import ExperiencePage from './pages/CompaniesPage/ExperiencePage/ExperiencePage';
-import CoverLetterPage from './pages/CompaniesPage/CoverLetterPage/CoverLetterPage';
+import UserInfoPage from './pages/User-infoPage/User-infoPage';
 /**
  * @link https://reactrouter.com/start/data/routing
  */
@@ -23,31 +20,12 @@ const router = createBrowserRouter([
         element: <MainRoot />,
         children: [
           { index: true, element: <HomePage /> },
-          {
-            path: 'companies',
-            children: [
-              { index: true, element: <CompaniesPage /> },
-              {
-                path: ':company',
-                element: <CompaniesLayout />,
-                children: [
-                  {
-                    path: 'experience',
-                    element: <ExperiencePage />,
-                  },
-                  {
-                    path: 'coverletter',
-                    element: <CoverLetterPage />,
-                  },
-                ],
-              },
-            ],
-          },
+          { path: 'companies', element: <CompaniesPage /> },
+          { path: 'user-info', element: <UserInfoPage /> },
         ],
       },
       { path: 'login', element: <LoginPage /> },
       { path: 'signup', element: <SignupPage /> },
-      { path: 'test', element: <TestPage /> },
     ],
   },
 ]);

@@ -55,16 +55,13 @@ function SignupPage({ userName = '예시' }: SignupPageProps) {
 
   return (
     <div className="min-h-screen w-full bg-[#1D1B2B] flex justify-center items-center p-4">
-      <div
-        className="w-full max-w-[1800px] max-h-[900px] flex items-center justify-between gap-16 px-[5%]"
-        style={{ aspectRatio: '16/9' }}
-      >
+      <div className="w-full max-w-[1800px] flex items-center justify-between gap-16 px-[5%]">
         <div className="flex items-center gap-6 shrink-0">
           <LogoIcon className="w-[130px]" />
           <LogoTitle className="w-[320px]" />
         </div>
 
-        <div className="bg-white py-40 px-18 flex-1 max-w-[950px] shadow-xl rounded-xl flex items-start pt-16">
+        <div className="bg-white py-16 px-18 flex-1 max-w-[950px] shadow-xl rounded-xl flex items-start">
           <div className="w-full">
             <div className="w-full mb-16">
               <h1 className="text-2xl font-bold tracking-tight text-black mb-2">
