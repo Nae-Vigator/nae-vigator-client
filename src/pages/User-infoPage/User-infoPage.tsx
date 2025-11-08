@@ -429,7 +429,7 @@ function UserInfoPage() {
   };
 
   return (
-    <div className="w-full">
+    <div>
       <h3 className="typo-h3 text-foreground mb-8">기본 정보</h3>
 
       <div className="flex items-center justify-between mb-8 overflow-x-auto">

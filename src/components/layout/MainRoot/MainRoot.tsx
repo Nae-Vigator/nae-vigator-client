@@ -9,9 +9,13 @@ function MainRoot() {
   return (
     <SidebarProvider>
       <div className="flex min-h-screen">
-        <div className={isStickyPage ? 'sticky top-0 h-screen overflow-y-auto' : ''}>
+        {isStickyPage ? (
+          <div className="sticky top-0 h-screen overflow-y-auto">
+            <AppSidebar />
+          </div>
+        ) : (
           <AppSidebar />
-        </div>
+        )}
         <main className="flex-1 py-8 px-20">
           <Outlet />
         </main>
