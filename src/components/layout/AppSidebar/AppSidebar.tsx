@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { Link } from 'react-router';
+import { Link, useLocation, useParams } from 'react-router';
 import {
   Sidebar,
   SidebarContent,
@@ -49,8 +49,12 @@ function AppSidebar() {
   const [isContentVisible, setIsContentVisible] = useState(open);
   const [isCompanySectionOpen, setIsCompanySectionOpen] = useState(false);
   const [companyOpenMap, setCompanyOpenMap] = useState<{
-    [key: number]: boolean;
-  }>({ 0: true });
+    [key: string]: boolean;
+  }>({});
+
+  const location = useLocation();
+  const params = useParams();
+  const lastPath = location.pathname.split('/').pop() ?? '';
 
   const handleSidebarOpenIconClick = () => {
     if (open) return;
@@ -62,8 +66,8 @@ function AppSidebar() {
     else handleSidebarOpenIconClick();
   };
 
-  const toggleCompaniesMenu = (i: number, isOpen: boolean) => {
-    setCompanyOpenMap((prev) => ({ ...prev, [i]: isOpen }));
+  const toggleCompaniesMenu = (company: string, isOpen: boolean) => {
+    setCompanyOpenMap((prev) => ({ ...prev, [company]: isOpen }));
   };
 
   /** 사이드바 열림/닫힘 애니메이션에 맞춰 콘텐츠 표시 제어 */
@@ -160,9 +164,9 @@ function AppSidebar() {
                       {COMPANY_LIST.map((company, i) => (
                         <SidebarMenuItem key={company} className="pl-3.5 ">
                           <Collapsible
-                            open={!!companyOpenMap[i]}
+                            open={!!companyOpenMap[company]}
                             onOpenChange={(open) =>
-                              toggleCompaniesMenu(i, open)
+                              toggleCompaniesMenu(company, open)
                             }
                           >
                             <CollapsibleTrigger asChild>
@@ -185,12 +189,22 @@ function AppSidebar() {
                             <CollapsibleContent>
                               <SidebarMenuSub>
                                 <Link to={`/companies/${company}/experience`}>
-                                  <SidebarMenuSubButton isActive={i === 0}>
+                                  <SidebarMenuSubButton
+                                    isActive={
+                                      params.company === company &&
+                                      lastPath === 'experience'
+                                    }
+                                  >
                                     경험정리
                                   </SidebarMenuSubButton>
                                 </Link>
                                 <Link to={`/companies/${company}/coverletter`}>
-                                  <SidebarMenuSubButton>
+                                  <SidebarMenuSubButton
+                                    isActive={
+                                      params.company === company &&
+                                      lastPath === 'coverletter'
+                                    }
+                                  >
                                     자기소개서
                                   </SidebarMenuSubButton>
                                 </Link>
