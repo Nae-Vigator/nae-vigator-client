@@ -118,7 +118,11 @@ function ManageCoverletterDialog() {
             <Button variant={'outline'} className="mr-2.5">
               저장
             </Button>
-            <AlertDialogAction>AI로 자기소개서 초안 생성하기</AlertDialogAction>
+            <AlertDialogAction
+              disabled={questions.every((q) => !q.title.trim())}
+            >
+              AI로 자기소개서 초안 생성하기
+            </AlertDialogAction>
           </div>
         </AlertDialogFooter>
       </AlertDialogContent>
