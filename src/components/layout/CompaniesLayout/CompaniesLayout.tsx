@@ -6,6 +6,7 @@ import blankcompany from '@/assets/images/blank-company.svg';
 import Tag from '@/components/common/Tag/Tag';
 import { useState } from 'react';
 import ManageCoverletterDialog from './ManageCoverletterDialog/ManageCoverletterDialog';
+import ManageCompanyDialog from './ManageCompanyDialog/ManageCompanyDialog';
 
 export type ExperienceSidebarContextType = [
   boolean,
@@ -109,7 +110,7 @@ function CompaniesLayout() {
             <span className="text-sm">지원 직무: 프로덕트 디자이너</span>
           </div>
 
-          <ChevronRight />
+          <ManageCompanyDialog />
         </div>
       </header>
 
