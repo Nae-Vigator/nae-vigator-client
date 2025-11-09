@@ -36,6 +36,7 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
 import LogoTitle from '@/components/common/LogoTitle';
+import AddCompanyDialog from '@/components/common/AddCompanyDialog/AddCompanyDialog';
 
 const COMPANY_LIST = ['회사명 1', '회사명 2', '회사명 3'];
 const MENU_LIST = [
@@ -221,11 +222,17 @@ function AppSidebar() {
 
             {isContentVisible && (
               <SidebarMenuItem>
-                <SidebarMenuButton className="flex justify-between">
-                  <span className="text-sidebar-foreground/70">회사 추가</span>
+                <AddCompanyDialog
+                  TriggerButton={
+                    <SidebarMenuButton className="flex justify-between">
+                      <span className="text-sidebar-foreground/70">
+                        회사 추가
+                      </span>
 
-                  <Plus />
-                </SidebarMenuButton>
+                      <Plus />
+                    </SidebarMenuButton>
+                  }
+                />
               </SidebarMenuItem>
             )}
           </SidebarMenu>
