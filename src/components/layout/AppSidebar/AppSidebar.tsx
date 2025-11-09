@@ -208,9 +208,6 @@ function AppSidebar() {
                                     자기소개서
                                   </SidebarMenuSubButton>
                                 </Link>
-                                <SidebarMenuSubButton>
-                                  예상 면접 질문
-                                </SidebarMenuSubButton>
                               </SidebarMenuSub>
                             </CollapsibleContent>
                           </Collapsible>
