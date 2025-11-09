@@ -5,6 +5,7 @@ import { Link, Outlet, useLocation, useParams } from 'react-router';
 import blankcompany from '@/assets/images/blank-company.svg';
 import Tag from '@/components/common/Tag/Tag';
 import { useState } from 'react';
+import ManageCoverletterDialog from './ManageCoverletterDialog/ManageCoverletterDialog';
 
 export type ExperienceSidebarContextType = [
   boolean,
@@ -31,7 +32,11 @@ function CompaniesLayout() {
   const PAGE_TITLE = PAGE_TITLE_MAP[lastPath];
 
   return (
-    <div className={cn(isExperienceSidebarOpen && 'pr-[424px]')}>
+    <div
+      className={cn(
+        lastPath === 'experience' && isExperienceSidebarOpen && 'pr-[424px]',
+      )}
+    >
       <header>
         <div className="flex items-center gap-3.5 mb-10">
           <Link to="/companies">
@@ -68,13 +73,21 @@ function CompaniesLayout() {
             ))}
           </div>
 
-          <Button
-            size="lg"
-            className="h-11"
-            onClick={() => setIsExperienceSidebarOpen((prev) => !prev)}
-          >
-            <Plus /> 카드 추가
-          </Button>
+          {lastPath === 'experience' && (
+            <Button
+              size="lg"
+              className="h-11"
+              onClick={() => setIsExperienceSidebarOpen((prev) => !prev)}
+            >
+              <Plus /> 카드 추가
+            </Button>
+          )}
+
+          {lastPath === 'coverletter' && (
+            <>
+              <ManageCoverletterDialog />
+            </>
+          )}
         </div>
 
         <div className="flex items-center gap-5 mb-7">

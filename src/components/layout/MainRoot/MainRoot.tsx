@@ -8,7 +8,7 @@ function MainRoot() {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen w-full">
         {isStickyPage ? (
           <div className="sticky top-0 h-screen overflow-y-auto">
             <AppSidebar />
