@@ -38,7 +38,17 @@ function ManageCoverletterDialog() {
     );
   };
 
-  console.log(questions);
+  const handleCommonQuestionClick = () => {
+    const LIST = [
+      '지원하는 회사와 직무를 선택한 이유와 입사 후 어떤 목표를 가지고 있는지 말씀해 주세요.',
+      '본인이 성장하면서 가장 중요하게 배운 가치관이나 태도는 무엇이며, 이를 어떻게 삶에 적용해왔나요?',
+      '직무 관련 경험 중 가장 의미 있었던 사례를 구체적으로 설명해 주시고, 그 과정에서 어떤 성과를 냈는지 알려주세요.',
+      '본인의 강점과 부족한 점을 솔직하게 작성하고, 팀 내 갈등이나 문제 상황을 어떻게 극복했는지 구체적으로 말해 주세요.',
+      '',
+    ];
+
+    setQuestions(LIST.map((title) => ({ id: crypto.randomUUID(), title })));
+  };
 
   return (
     <AlertDialog>
@@ -59,7 +69,11 @@ function ManageCoverletterDialog() {
             </AlertDialogDescription>
           </div>
 
-          <Button variant={'outline'} size={'lg'}>
+          <Button
+            variant={'outline'}
+            size={'lg'}
+            onClick={handleCommonQuestionClick}
+          >
             자주 묻는 기본 자기소개서 질문 불러오기
           </Button>
         </AlertDialogHeader>
