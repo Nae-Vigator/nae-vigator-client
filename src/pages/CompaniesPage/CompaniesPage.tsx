@@ -22,6 +22,8 @@ const DATA = [
   { id: 6, name: '쿠팡', job: '프로덕트 디자이너' },
 ];
 
+// const DATA = [];
+
 function CompaniesPage() {
   const hasData = DATA.length > 0;
 
@@ -36,7 +38,9 @@ function CompaniesPage() {
         회사별 맞춤 관리
       </h3>
       <div
-        className={cn(hasData ? 'flex justify-between mb-10' : 'text-center')}
+        className={cn(
+          hasData ? 'flex justify-between items-center mb-10' : 'text-center',
+        )}
       >
         <h4 className={cn('typo-h4 text-zinc-700', !hasData && 'mb-10')}>
           회사와 관련 공고 등록하고 맞춤 자기소개서를 생성해보세요.
