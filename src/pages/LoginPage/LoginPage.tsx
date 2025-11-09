@@ -6,10 +6,7 @@ import LogoTitle from '@/components/common/LogoTitle';
 function LoginPage() {
   return (
     <div className="min-h-screen w-full bg-[#1D1B2B] flex justify-center items-center p-4">
-      <div
-        className="w-full max-w-[1600px] max-h-[900px] flex flex-col items-center justify-center"
-        style={{ aspectRatio: '16/9' }}
-      >
+      <div className="w-full max-w-[1600px] flex flex-col items-center justify-center">
         <div className="flex items-center gap-6 mb-2">
           <LogoIcon className="w-[150px]" />
           <LogoTitle className="w-[373px]" />
