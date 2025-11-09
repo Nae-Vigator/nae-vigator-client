@@ -1,3 +1,4 @@
+import CompanyInfoForm from '@/components/common/CompanyInfoForm/CompanyInfoForm';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,23 +9,8 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import {
-  Command,
-  CommandGroup,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { Check, ChevronsUpDown, Plus } from 'lucide-react';
-import { useState } from 'react';
+import { Plus } from 'lucide-react';
 import { Link } from 'react-router';
 
 const DATA = [
@@ -36,29 +22,7 @@ const DATA = [
   { id: 6, name: '쿠팡', job: '프로덕트 디자이너' },
 ];
 
-const EMPLOYMENT_TYPE = [
-  {
-    value: '정규직',
-    label: '정규직',
-  },
-  {
-    value: '계약직',
-    label: '계약직',
-  },
-  {
-    value: '인턴',
-    label: '인턴',
-  },
-  {
-    value: '프리랜서',
-    label: '프리랜서',
-  },
-];
-
 function CompaniesPage() {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('');
-
   const hasData = DATA.length > 0;
 
   return (
@@ -100,113 +64,9 @@ function CompaniesPage() {
               </div>
             </AlertDialogTitle>
 
-            <div id="회사 정보를 입력해주세요." className="flex flex-col gap-4">
-              <div className="flex gap-4">
-                <div>
-                  <Label htmlFor="company" isRequired>
-                    회사명
-                  </Label>
-                  <Input
-                    id="company"
-                    className="w-[323px]"
-                    type="text"
-                    placeholder="지원하려고 하는 회사명을 입력해주세요."
-                    required
-                  />
-                </div>
+            <CompanyInfoForm />
 
-                <div className="w-full">
-                  <Label htmlFor="job" isRequired>
-                    직무 선택
-                  </Label>
-                  <Input
-                    id="job"
-                    type="text"
-                    placeholder="지원하려는 직무를 선택해주세요."
-                    required
-                  />
-                </div>
-
-                <div className="w-full">
-                  <Label htmlFor="type">채용 형태</Label>
-                  <Popover open={open} onOpenChange={setOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        id="type"
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={open}
-                        data-empty={!value}
-                        className="flex justify-between w-full data-[empty=true]:text-muted-foreground"
-                      >
-                        {value
-                          ? EMPLOYMENT_TYPE.find((type) => type.value === value)
-                              ?.label
-                          : '채용 형태를 선택해주세요.'}
-                        <ChevronsUpDown className="opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[200px] p-0">
-                      <Command>
-                        <CommandList>
-                          <CommandGroup>
-                            {EMPLOYMENT_TYPE.map((type) => (
-                              <CommandItem
-                                key={type.value}
-                                value={type.value}
-                                onSelect={(currentValue) => {
-                                  setValue(
-                                    currentValue === value ? '' : currentValue,
-                                  );
-                                  setOpen(false);
-                                }}
-                              >
-                                {type.label}
-                                <Check
-                                  className={cn(
-                                    'ml-auto',
-                                    value === type.value
-                                      ? 'opacity-100'
-                                      : 'opacity-0',
-                                  )}
-                                />
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="url">관련 공고 URL</Label>
-                <div className="relative">
-                  <span className="absolute top-1/2 left-3 -translate-y-1/2  text-sm text-muted-foreground ">
-                    https://
-                  </span>
-                  <div className="absolute left-[68px] w-px bg-input h-9" />
-                  <Input
-                    id="url"
-                    type="text"
-                    placeholder="example.com"
-                    className="pl-[78px]"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="description">회사 설명</Label>
-                <Textarea
-                  id="description"
-                  placeholder="더욱 정확한 정보를 위한 설명도 함께 작성해주세요."
-                  className="min-h-40"
-                />
-              </div>
-            </div>
-
-            <AlertDialogFooter className="sm:justify-between">
+            <AlertDialogFooter className="sm:justify-between mt-[26px]">
               <AlertDialogCancel>취소</AlertDialogCancel>
               <AlertDialogAction>확인</AlertDialogAction>
             </AlertDialogFooter>
