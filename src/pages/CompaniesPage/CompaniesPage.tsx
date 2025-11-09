@@ -1,13 +1,4 @@
-import CompanyInfoForm from '@/components/common/CompanyInfoForm/CompanyInfoForm';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+import AddCompanyDialog from '@/components/common/AddCompanyDialog/AddCompanyDialog';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Plus } from 'lucide-react';
@@ -45,37 +36,15 @@ function CompaniesPage() {
         <h4 className={cn('typo-h4 text-zinc-700', !hasData && 'mb-10')}>
           회사와 관련 공고 등록하고 맞춤 자기소개서를 생성해보세요.
         </h4>
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
+
+        <AddCompanyDialog
+          TriggerButton={
             <Button className="h-11">
               <Plus />
               회사 추가
             </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent
-            className="min-w-[936px]"
-            aria-describedby="회사 정보를 입력해주세요."
-          >
-            <AlertDialogTitle>
-              <div className="flex flex-col gap-1.5">
-                <strong className="text-2xl font-semibold ">
-                  지원하고자 하는 회사의 정보를 입력해주세요.
-                </strong>
-                <span className="text-sm text-muted-foreground font-normal">
-                  관련 공고 URL 및 간단한 회사 설명을 함께 작성해주시면 정확도가
-                  더 올라가요.
-                </span>
-              </div>
-            </AlertDialogTitle>
-
-            <CompanyInfoForm />
-
-            <AlertDialogFooter className="sm:justify-between mt-[26px]">
-              <AlertDialogCancel>취소</AlertDialogCancel>
-              <AlertDialogAction>확인</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+          }
+        />
       </div>
 
       {hasData && (
