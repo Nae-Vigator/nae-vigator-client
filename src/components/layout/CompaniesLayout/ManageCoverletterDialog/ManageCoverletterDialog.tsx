@@ -15,9 +15,12 @@ import { Plus, X } from 'lucide-react';
 import { useState } from 'react';
 
 function ManageCoverletterDialog() {
+  const [openMain, setOpenMain] = useState(false);
+  const [openSub, setOpenSub] = useState(false);
   const [questions, setQuestions] = useState([
     { id: crypto.randomUUID(), title: '' },
   ]);
+  const [isChange, setIsChange] = useState(false);
 
   const handleAddQuestionClick = () => {
     setQuestions((prev) => [...prev, { id: crypto.randomUUID(), title: '' }]);
@@ -26,6 +29,7 @@ function ManageCoverletterDialog() {
   const handleDeleteQuestionClick = (id: string) => {
     if (questions.length === 1) return;
 
+    setIsChange(true);
     setQuestions((prev) => prev.filter((q) => q.id !== id));
   };
 
@@ -33,6 +37,7 @@ function ManageCoverletterDialog() {
     e: React.ChangeEvent<HTMLInputElement>,
     id: string,
   ) => {
+    setIsChange(true);
     setQuestions((prev) =>
       prev.map((q) => (q.id === id ? { ...q, title: e.target.value } : q)),
     );
@@ -51,82 +56,113 @@ function ManageCoverletterDialog() {
   };
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button size="lg" className="h-11" onClick={() => {}}>
-          질문관리
-        </Button>
-      </AlertDialogTrigger>
-
-      <AlertDialogContent className="min-w-[936px]">
-        <AlertDialogHeader className="flex flex-row justify-between items-center">
-          <div>
-            <AlertDialogTitle className="text-2xl mb-1.5">
-              맞춤형 자기소개서 질문 관리하기
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-sm text-muted-foreground">
-              자유롭게 문항을 입력해 개별 지원서 작성에 활용해 보세요.
-            </AlertDialogDescription>
-          </div>
-
-          <Button
-            variant={'outline'}
-            size={'lg'}
-            onClick={handleCommonQuestionClick}
-          >
-            자주 묻는 기본 자기소개서 질문 불러오기
+    <>
+      <AlertDialog open={openMain} onOpenChange={setOpenMain}>
+        <AlertDialogTrigger asChild>
+          <Button size="lg" className="h-11" onClick={() => {}}>
+            질문관리
           </Button>
-        </AlertDialogHeader>
+        </AlertDialogTrigger>
 
-        <div className="flex flex-col gap-4 mb-10">
-          <ol className="flex flex-col gap-4">
-            {questions.map((question, i) => (
-              <li key={question.id} className="flex gap-4 items-center">
-                <span className="border border-ring rounded-md size-8 flex justify-center items-center shrink-0">
-                  {i + 1}
-                </span>
-                <Input
-                  className="h-10"
-                  value={question.title}
-                  placeholder="자유형식 문항이나 회사별 질문을 직접 입력해 보세요."
-                  onChange={(e) => handleInputChange(e, question.id)}
-                />
+        <AlertDialogContent className="min-w-[936px]">
+          <AlertDialogHeader className="flex flex-row justify-between items-center">
+            <div>
+              <AlertDialogTitle className="text-2xl mb-1.5">
+                맞춤형 자기소개서 질문 관리하기
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-sm text-muted-foreground">
+                자유롭게 문항을 입력해 개별 지원서 작성에 활용해 보세요.
+              </AlertDialogDescription>
+            </div>
 
-                <Button
-                  variant={'secondary'}
-                  size={'icon-lg'}
-                  onClick={() => handleDeleteQuestionClick(question.id)}
-                >
-                  <X />
-                </Button>
-              </li>
-            ))}
-          </ol>
-
-          <Button
-            size={'icon-lg'}
-            className="self-center"
-            onClick={handleAddQuestionClick}
-          >
-            <Plus />
-          </Button>
-        </div>
-
-        <AlertDialogFooter className="flex sm:justify-between">
-          <AlertDialogCancel>취소</AlertDialogCancel>
-          <div>
-            <Button variant={'outline'} className="mr-2.5">
-              저장
-            </Button>
-            <AlertDialogAction
-              disabled={questions.every((q) => !q.title.trim())}
+            <Button
+              variant={'outline'}
+              size={'lg'}
+              onClick={handleCommonQuestionClick}
             >
-              AI로 자기소개서 초안 생성하기
-            </AlertDialogAction>
+              자주 묻는 기본 자기소개서 질문 불러오기
+            </Button>
+          </AlertDialogHeader>
+
+          <div className="flex flex-col gap-4 mb-10">
+            <ol className="flex flex-col gap-4">
+              {questions.map((question, i) => (
+                <li key={question.id} className="flex gap-4 items-center">
+                  <span className="border border-ring rounded-md size-8 flex justify-center items-center shrink-0">
+                    {i + 1}
+                  </span>
+                  <Input
+                    className="h-10"
+                    value={question.title}
+                    placeholder="자유형식 문항이나 회사별 질문을 직접 입력해 보세요."
+                    onChange={(e) => handleInputChange(e, question.id)}
+                  />
+
+                  <Button
+                    variant={'secondary'}
+                    size={'icon-lg'}
+                    onClick={() => handleDeleteQuestionClick(question.id)}
+                  >
+                    <X />
+                  </Button>
+                </li>
+              ))}
+            </ol>
+
+            <Button
+              size={'icon-lg'}
+              className="self-center"
+              onClick={handleAddQuestionClick}
+            >
+              <Plus />
+            </Button>
           </div>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+
+          <AlertDialogFooter className="flex sm:justify-between">
+            <AlertDialogCancel onClick={() => isChange && setOpenSub(true)}>
+              취소
+            </AlertDialogCancel>
+            <div>
+              <Button
+                variant={'outline'}
+                className="mr-2.5"
+                onClick={() => setIsChange(false)}
+              >
+                저장
+              </Button>
+              <AlertDialogAction
+                onClick={() => setIsChange(false)}
+                disabled={questions.every((q) => !q.title.trim())}
+              >
+                AI로 자기소개서 초안 생성하기
+              </AlertDialogAction>
+            </div>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={openSub} onOpenChange={setOpenSub}>
+        <AlertDialogContent className="gap-6">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-center">
+              저장되지 않은 변경사항이 있습니다.
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
+              변경사항을 저장하지 않고 나가시겠습니까?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="sm:justify-center">
+            <AlertDialogAction
+              className="h-10"
+              onClick={() => setOpenMain(true)}
+            >
+              취소
+            </AlertDialogAction>
+            <AlertDialogCancel className="h-10">나가기</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
 
