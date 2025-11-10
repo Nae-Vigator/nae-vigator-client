@@ -10,6 +10,7 @@ import CompaniesLayout from './components/layout/CompaniesLayout/CompaniesLayout
 import ExperiencePage from './pages/CompaniesPage/ExperiencePage/ExperiencePage';
 import UserInfoPage from './pages/User-infoPage/User-infoPage';
 import CoverLetterPage from './pages/CompaniesPage/CoverLetterPage/CoverLetterPage';
+import AccountPage from './pages/AccountPage/AccountPage';
 /**
  * @link https://reactrouter.com/start/data/routing
  */
@@ -44,6 +45,7 @@ const router = createBrowserRouter([
             ],
           },
           { path: 'user-info', element: <UserInfoPage /> },
+          { path: 'account', element: <AccountPage /> },
         ],
       },
       { path: 'login', element: <LoginPage /> },
