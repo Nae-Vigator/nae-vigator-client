@@ -82,7 +82,7 @@ function AppSidebar() {
   }, [open]);
 
   return (
-    <Sidebar className="absolute text-zinc-50 px-5 py-8 bg-[var(--sidebar)]">
+    <Sidebar className="sticky top-0 text-zinc-50 px-5 py-8 bg-[var(--sidebar)]">
       <SidebarHeader className="flex justify-between items-center mb-2">
         {isContentVisible && (
           <div className="flex items-center gap-2">
@@ -103,7 +103,7 @@ function AppSidebar() {
         )}
       </SidebarHeader>
 
-      <SidebarContent className="scrollbar -mr-3 pr-3">
+      <SidebarContent className="scrollbar -mr-3 pr-3 overscroll-contain">
         <SidebarGroup>
           <SidebarMenu className={cn(isContentVisible && 'p-2')}>
             <SidebarMenuItem className="flex items-center">
