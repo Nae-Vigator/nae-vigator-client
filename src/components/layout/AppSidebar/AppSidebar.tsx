@@ -40,9 +40,9 @@ import AddCompanyDialog from '@/components/common/AddCompanyDialog/AddCompanyDia
 
 const COMPANY_LIST = ['회사명 1', '회사명 2', '회사명 3'];
 const MENU_LIST = [
-  { name: '기본 정보', Icon: User },
-  { name: '경험 정리 도움받기', Icon: ChartPie },
-  { name: '설정', Icon: Ellipsis },
+  { name: '기본 정보', Icon: User, to: 'user-info' },
+  { name: '경험 정리 도움받기', Icon: ChartPie, to: '' },
+  { name: '설정', Icon: Ellipsis, to: 'account' },
 ];
 
 function AppSidebar() {
@@ -82,7 +82,7 @@ function AppSidebar() {
   }, [open]);
 
   return (
-    <Sidebar className="absolute text-zinc-50 px-5 py-8 bg-[var(--sidebar)]">
+    <Sidebar className="sticky top-0 text-zinc-50 px-5 py-8 bg-[var(--sidebar)]">
       <SidebarHeader className="flex justify-between items-center mb-2">
         {isContentVisible && (
           <div className="flex items-center gap-2">
@@ -103,7 +103,7 @@ function AppSidebar() {
         )}
       </SidebarHeader>
 
-      <SidebarContent className="scrollbar -mr-3 pr-3">
+      <SidebarContent className="scrollbar -mr-3 pr-3 overscroll-contain">
         <SidebarGroup>
           <SidebarMenu className={cn(isContentVisible && 'p-2')}>
             <SidebarMenuItem className="flex items-center">
@@ -240,16 +240,18 @@ function AppSidebar() {
 
         <SidebarGroup>
           <SidebarMenu className="text-sm">
-            {MENU_LIST.map(({ name, Icon }) => (
+            {MENU_LIST.map(({ name, Icon, to }) => (
               <SidebarMenuItem key={name} className="flex items-center">
-                <SidebarMenuButton
-                  className={cn(!isContentVisible && 'size-8 min-w-8')}
-                  onClick={handleSidebarOpenIconClick}
-                >
-                  <Icon className="size-4" />
+                <Link to={to}>
+                  <SidebarMenuButton
+                    className={cn(!isContentVisible && 'size-8 min-w-8')}
+                    onClick={handleSidebarOpenIconClick}
+                  >
+                    <Icon className="size-4" />
 
-                  {isContentVisible && <span>{name}</span>}
-                </SidebarMenuButton>
+                    {isContentVisible && <span>{name}</span>}
+                  </SidebarMenuButton>
+                </Link>
               </SidebarMenuItem>
             ))}
           </SidebarMenu>
