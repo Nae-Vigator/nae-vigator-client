@@ -6,6 +6,7 @@ import blankcompany from '@/assets/images/blank-company.svg';
 import Tag from '@/components/common/Tag/Tag';
 import { useState } from 'react';
 import ManageCoverletterDialog from './ManageCoverletterDialog/ManageCoverletterDialog';
+import ManageCompanyDialog from './ManageCompanyDialog/ManageCompanyDialog';
 
 export type ExperienceSidebarContextType = [
   boolean,
@@ -15,13 +16,11 @@ export type ExperienceSidebarContextType = [
 const PATH_LIST = [
   { path: 'experience', label: '경험정리' },
   { path: 'coverletter', label: '자기소개서' },
-  { path: 'interview', label: '예상 면접 질문' },
 ];
 
 const PAGE_TITLE_MAP: Record<string, string> = {
   experience: '경험정리',
   coverletter: '자기소개서',
-  interview: '예상 면접 질문',
 };
 
 function CompaniesLayout() {
@@ -109,7 +108,7 @@ function CompaniesLayout() {
             <span className="text-sm">지원 직무: 프로덕트 디자이너</span>
           </div>
 
-          <ChevronRight />
+          <ManageCompanyDialog />
         </div>
       </header>
 
