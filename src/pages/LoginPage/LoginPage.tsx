@@ -2,8 +2,21 @@ import naver from '@/assets/images/naver-logo.svg';
 import kakao from '@/assets/images/kakao-logo.svg';
 import LogoIcon from '@/components/common/LogoIcon';
 import LogoTitle from '@/components/common/LogoTitle';
+import { cn } from '@/lib/utils';
+// import { appFetch } from '@/lib/appFetch';
 
 function LoginPage() {
+  const handleLoginClick = (provider: string) => {
+    // appFetch(
+    //   (window.location.href = `${
+    //     import.meta.env.VITE_SERVER_API_URL
+    //   }/api/v1/auth/social/${provider}/url`),
+    // );
+    window.location.href = `${
+      import.meta.env.VITE_SERVER_API_URL
+    }/api/v1/auth/social/${provider}/url`;
+  };
+
   return (
     <div className="min-h-screen w-full bg-[#1D1B2B] flex justify-center items-center p-4">
       <div className="w-full max-w-[1600px] flex flex-col items-center justify-center">
@@ -18,19 +31,23 @@ function LoginPage() {
 
         <div className="w-full max-w-[450px] flex flex-col gap-4">
           <button
-            className="w-full h-[45px] bg-[#03C75A] hover:bg-[#02b350] text-white text-[14px] font-medium rounded-lg transition-colors flex items-center justify-center gap-6"
+            className={cn(
+              `w-full h-[45px] bg-[#03C75A] hover:bg-[#02B350] text-white text-[14px] font-medium rounded-lg transition-colors flex items-center justify-center gap-6`,
+            )}
             style={{ fontFamily: 'Inter, sans-serif' }}
+            onClick={() => handleLoginClick('naver')}
           >
             <img src={naver} alt="네이버" className="w-4 h-4" />
             네이버로 로그인
           </button>
 
           <button
-            className="w-full h-[45px] bg-[#FEE500] hover:bg-[#fdd800] text-[#191919] text-[14px] font-medium rounded-lg transition-colors flex items-center justify-center gap-6"
+            className={`w-full h-[45px] bg-[#FEE500] hover:bg-[#FDD800] text-white text-[14px] font-medium rounded-lg transition-colors flex items-center justify-center gap-6`}
             style={{ fontFamily: 'Inter, sans-serif' }}
+            onClick={() => handleLoginClick('kakao')}
           >
             <img src={kakao} alt="카카오" className="w-4 h-4" />
-            카카오톡으로 로그인
+            카카오로 로그인
           </button>
 
           <button
