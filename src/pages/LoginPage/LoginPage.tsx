@@ -5,23 +5,6 @@ import LogoTitle from '@/components/common/LogoTitle';
 import { cn } from '@/lib/utils';
 // import { appFetch } from '@/lib/appFetch';
 
-const PROVIDERS = [
-  {
-    provider: 'naver',
-    img: naver,
-    name: '네이버',
-    bg: '#03C75A',
-    hover: '#02b350',
-  },
-  {
-    provider: 'kakao',
-    img: kakao,
-    name: '카카오',
-    bg: '#FEE500',
-    hover: '#fdd800',
-  },
-];
-
 function LoginPage() {
   const handleLoginClick = (provider: string) => {
     // appFetch(
@@ -47,18 +30,25 @@ function LoginPage() {
         </p>
 
         <div className="w-full max-w-[450px] flex flex-col gap-4">
-          {PROVIDERS.map(({ provider, img, name, bg, hover }) => (
-            <button
-              className={cn(
-                `w-full h-[45px] bg-[${bg}] hover:bg-[${hover}] text-white text-[14px] font-medium rounded-lg transition-colors flex items-center justify-center gap-6`,
-              )}
-              style={{ fontFamily: 'Inter, sans-serif' }}
-              onClick={() => handleLoginClick(provider)}
-            >
-              <img src={img} alt="네이버" className="w-4 h-4" />
-              {name}로 로그인
-            </button>
-          ))}
+          <button
+            className={cn(
+              `w-full h-[45px] bg-[#03C75A] hover:bg-[#02B350] text-white text-[14px] font-medium rounded-lg transition-colors flex items-center justify-center gap-6`,
+            )}
+            style={{ fontFamily: 'Inter, sans-serif' }}
+            onClick={() => handleLoginClick('naver')}
+          >
+            <img src={naver} alt="네이버" className="w-4 h-4" />
+            네이버로 로그인
+          </button>
+
+          <button
+            className={`w-full h-[45px] bg-[#FEE500] hover:bg-[#FDD800] text-white text-[14px] font-medium rounded-lg transition-colors flex items-center justify-center gap-6`}
+            style={{ fontFamily: 'Inter, sans-serif' }}
+            onClick={() => handleLoginClick('kakao')}
+          >
+            <img src={kakao} alt="카카오" className="w-4 h-4" />
+            카카오로 로그인
+          </button>
 
           <button
             className="w-full h-[45px] bg-white hover:bg-zinc-100 text-[#2B2838] text-[14px] font-medium rounded-lg transition-colors"
